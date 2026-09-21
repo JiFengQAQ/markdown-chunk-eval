@@ -1,0 +1,62 @@
+{
+  "schema": "community6_appendix_case/1",
+  "slug": "x3",
+  "category": "execution",
+  "model_key": "qwen3.5-4b",
+  "doc_id": "hima_1638842",
+  "status": "failed",
+  "parse_status": "empty_output",
+  "canonical_result_file": "results/final_v001/final_A_qwen3.5-4b.jsonl",
+  "source_sha256": "ef9d97f3a41c6315d150a611163b1f3b70b75de1364592da62b2c5f783437bec",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "69042cb67c163cc81a4a40e34b9bd11ac99c767894d966935aa2097d6fb70233",
+  "response_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "sanitized_response_sha256": "3e0cd3c7c0a22fc6de9ee17716aeb5ebcdbfdff8a72e388a4de6276678b18670",
+  "token_usage": {
+    "prompt_tokens": 8127,
+    "total_tokens": 24511,
+    "completion_tokens": 16384,
+    "prompt_tokens_details": null
+  },
+  "attempt_chain": [
+    {
+      "source_file": "run_A_L2000_qwen3.5-4b.jsonl",
+      "source_line": 4,
+      "stage": "main_or_provider_retry",
+      "timestamp_utc": "2026-09-21T03:31:06.002742+00:00",
+      "status": "failed",
+      "parse_status": "empty_output",
+      "error_code": "empty_output",
+      "finish_reason": "length",
+      "max_tokens": 16384,
+      "attempts": 1,
+      "http_attempt_statuses": [
+        200
+      ],
+      "completion_tokens": 16384,
+      "reasoning_tokens": null,
+      "repetition": {
+        "lines": 1037,
+        "unique_line_ratio": 0.589,
+        "top_200char_repeat": 6,
+        "reasoning_chars": 41806,
+        "verdict": "LOOP"
+      }
+    }
+  ],
+  "response_top_level_keys": [
+    "choices",
+    "created",
+    "id",
+    "kv_transfer_params",
+    "model",
+    "object",
+    "prompt_logprobs",
+    "prompt_routed_experts",
+    "prompt_text",
+    "prompt_token_ids",
+    "service_tier",
+    "system_fingerprint",
+    "usage"
+  ]
+}

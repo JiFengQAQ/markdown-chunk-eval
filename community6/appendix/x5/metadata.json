@@ -1,0 +1,62 @@
+{
+  "schema": "community6_appendix_case/1",
+  "slug": "x5",
+  "category": "execution",
+  "model_key": "qwen3.6-35b-a3b",
+  "doc_id": "hima_1514478",
+  "status": "failed",
+  "parse_status": "output_oversize",
+  "canonical_result_file": "results/final_v001/final_A_qwen3.6-35b-a3b.jsonl",
+  "source_sha256": "04a0ee08fc5d1a79dffa46d56ce076850a1aa0160a3c936750537491c6c93d74",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "e0d451237a3587eed1553734aef8684958ae77dac37e10c74f76bbc6008e3635",
+  "response_text_sha256": "e0cc860bf3411900bb2f8ff2f4c9319cabeb30e7195468ea3bf2c3c6e434d8e8",
+  "sanitized_response_sha256": "22d6c00d10393d578c37854610775fdee86ac868c7e3c753e084a04982baf81e",
+  "token_usage": {
+    "prompt_tokens": 12266,
+    "completion_tokens": 9698,
+    "total_tokens": 21964,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 9659,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "attempt_chain": [
+    {
+      "source_file": "run_A_L2000_qwen3.6-35b-a3b.jsonl",
+      "source_line": 1,
+      "stage": "main_or_provider_retry",
+      "timestamp_utc": "2026-09-21T03:08:18.366335+00:00",
+      "status": "failed",
+      "parse_status": "output_oversize",
+      "error_code": "output_oversize",
+      "finish_reason": "stop",
+      "max_tokens": 16384,
+      "attempts": 1,
+      "http_attempt_statuses": [
+        200
+      ],
+      "completion_tokens": 9698,
+      "reasoning_tokens": 9659
+    }
+  ],
+  "response_top_level_keys": [
+    "choices",
+    "created",
+    "id",
+    "model",
+    "object",
+    "provider",
+    "service_tier",
+    "system_fingerprint",
+    "usage"
+  ]
+}

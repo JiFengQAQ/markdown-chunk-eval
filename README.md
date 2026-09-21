@@ -1,8 +1,10 @@
-# Markdown 语义切分预研报告（简版）
+# Markdown 语义切分预研报告
 
-- `index.html`：简版主报告，包含侧边栏目录、必要数据和文章级案例；不再内嵌原始数据。
-- `appendix/`：独立原始数据附录目录。8 个案例分别保存原始文章、system/user 输入、模型正文、清理后的响应 JSON 和元数据。
+- `index.html`：AITO M9 用户手册 12 篇简版报告。
+- `appendix/`：用户手册报告的独立原始数据附录。
+- `community6/index.html`：鸿蒙智行社区 6 篇长文简版报告。
+- `community6/appendix/`：社区长文报告的独立原始数据附录。
 
-主页：https://jifengqaq.github.io/markdown-chunk-eval/
+用户手册报告：https://jifengqaq.github.io/markdown-chunk-eval/
 
-附录：https://jifengqaq.github.io/markdown-chunk-eval/appendix/
+社区长文报告：https://jifengqaq.github.io/markdown-chunk-eval/community6/

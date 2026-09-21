@@ -1,0 +1,97 @@
+{
+  "schema": "community6_appendix_case/1",
+  "slug": "s2",
+  "category": "best",
+  "model_key": "deepseek-v4-flash-0731",
+  "doc_id": "hima_1717699",
+  "status": "ok",
+  "parse_status": "ok",
+  "canonical_result_file": "results/final_v001/final_A_deepseek-v4-flash-0731.jsonl",
+  "source_sha256": "1ae61bdbf63a088562883f53400e1310e12414d50ea379f84bbaadcfa41c0445",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "decbe795afe5d86236ad70442b5fab9ba0d264182f99e14b2d208b86f61ed7d5",
+  "response_text_sha256": "e4200ef08bf9f16ce8e489c9f98705c468ec66dc2811136874f6168424e5ad45",
+  "sanitized_response_sha256": "93d6975a42c6a9fbb1e2f79d40c445ef6f90da085b62112547f118e129b93bc2",
+  "token_usage": {
+    "prompt_tokens": 6655,
+    "completion_tokens": 13392,
+    "total_tokens": 20047,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 6400,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 9607,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "attempt_chain": [
+    {
+      "stage": "baseline",
+      "max_tokens": 16384,
+      "repetition": {
+        "lines": 637,
+        "unique_line_ratio": 0.991,
+        "top_200char_repeat": 1,
+        "reasoning_chars": 42762,
+        "verdict": "GENUINE"
+      }
+    },
+    {
+      "source_file": "rescue_A_L2000_deepseek-v4-flash-0731_cap32768.jsonl",
+      "source_line": 2,
+      "stage": "rescue",
+      "timestamp_utc": "2026-09-21T03:50:47.321157+00:00",
+      "status": "failed",
+      "parse_status": "empty_output",
+      "error_code": "empty_output",
+      "finish_reason": "length",
+      "max_tokens": 32768,
+      "attempts": 1,
+      "http_attempt_statuses": [
+        200
+      ],
+      "completion_tokens": 32768,
+      "reasoning_tokens": 28019,
+      "repetition": {
+        "lines": 1066,
+        "unique_line_ratio": 0.697,
+        "top_200char_repeat": 1,
+        "reasoning_chars": 98633,
+        "verdict": "GENUINE"
+      }
+    },
+    {
+      "source_file": "rescue_A_L2000_deepseek-v4-flash-0731_cap65536.jsonl",
+      "source_line": 1,
+      "stage": "rescue",
+      "timestamp_utc": "2026-09-21T04:12:43.339035+00:00",
+      "status": "ok",
+      "parse_status": "ok",
+      "error_code": null,
+      "finish_reason": "stop",
+      "max_tokens": 65536,
+      "attempts": 1,
+      "http_attempt_statuses": [
+        200
+      ],
+      "completion_tokens": 13392,
+      "reasoning_tokens": 9607
+    }
+  ],
+  "response_top_level_keys": [
+    "choices",
+    "created",
+    "id",
+    "model",
+    "object",
+    "provider",
+    "service_tier",
+    "system_fingerprint",
+    "usage"
+  ]
+}

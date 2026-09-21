@@ -1,0 +1,37 @@
+{
+  "schema": "community6_appendix_case/1",
+  "slug": "f1",
+  "category": "semantic",
+  "model_key": "qwen3.5-4b",
+  "doc_id": "hima_1219143",
+  "status": "ok",
+  "parse_status": "ok",
+  "canonical_result_file": "results/final_v001/final_A_qwen3.5-4b.jsonl",
+  "source_sha256": "7993bb1643b8def985e4404cc407ad004e2c4c202a0185abbdc5442bf0ce2594",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "98d675226acf998cf086b4aaa4aca255bca1ab95497b86ee7b5676c8f5d3a15d",
+  "response_text_sha256": "73a0186a4cf2826a37033e1141cd815c4905b5d35db7a16d1391a01bb036a306",
+  "sanitized_response_sha256": "14409fdfba2f56576e2150aa76281662ffbb015d5a075b6d7773c81be7f832e5",
+  "token_usage": {
+    "prompt_tokens": 9460,
+    "total_tokens": 20570,
+    "completion_tokens": 11110,
+    "prompt_tokens_details": null
+  },
+  "attempt_chain": [],
+  "response_top_level_keys": [
+    "choices",
+    "created",
+    "id",
+    "kv_transfer_params",
+    "model",
+    "object",
+    "prompt_logprobs",
+    "prompt_routed_experts",
+    "prompt_text",
+    "prompt_token_ids",
+    "service_tier",
+    "system_fingerprint",
+    "usage"
+  ]
+}

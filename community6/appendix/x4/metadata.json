@@ -1,0 +1,86 @@
+{
+  "schema": "community6_appendix_case/1",
+  "slug": "x4",
+  "category": "execution",
+  "model_key": "qwen3.5-4b",
+  "doc_id": "hima_1717699",
+  "status": "failed",
+  "parse_status": "empty_output",
+  "canonical_result_file": "results/final_v001/final_A_qwen3.5-4b.jsonl",
+  "source_sha256": "1ae61bdbf63a088562883f53400e1310e12414d50ea379f84bbaadcfa41c0445",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "decbe795afe5d86236ad70442b5fab9ba0d264182f99e14b2d208b86f61ed7d5",
+  "response_text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "sanitized_response_sha256": "09a61aad099f69201bd0beeb304afe5c02c1c2c5960511dd8b5f3e0daca455b9",
+  "token_usage": {
+    "prompt_tokens": 7097,
+    "total_tokens": 23481,
+    "completion_tokens": 16384,
+    "prompt_tokens_details": null
+  },
+  "attempt_chain": [
+    {
+      "source_file": "run_A_L2000_qwen3.5-4b.jsonl",
+      "source_line": 5,
+      "stage": "main_or_provider_retry",
+      "timestamp_utc": "2026-09-21T03:40:33.893678+00:00",
+      "status": "failed",
+      "parse_status": "empty_output",
+      "error_code": "empty_output",
+      "finish_reason": "length",
+      "max_tokens": 16384,
+      "attempts": 1,
+      "http_attempt_statuses": [
+        200
+      ],
+      "completion_tokens": 16384,
+      "reasoning_tokens": null,
+      "repetition": {
+        "lines": 853,
+        "unique_line_ratio": 0.442,
+        "top_200char_repeat": 1,
+        "reasoning_chars": 35729,
+        "verdict": "GENUINE"
+      }
+    },
+    {
+      "source_file": "rescue_A_L2000_qwen3.5-4b_cap40960.jsonl",
+      "source_line": 1,
+      "stage": "rescue",
+      "timestamp_utc": "2026-09-21T04:00:06.899042+00:00",
+      "status": "failed",
+      "parse_status": "empty_output",
+      "error_code": "empty_output",
+      "finish_reason": "length",
+      "max_tokens": 40960,
+      "attempts": 1,
+      "http_attempt_statuses": [
+        200
+      ],
+      "completion_tokens": 40960,
+      "reasoning_tokens": null,
+      "repetition": {
+        "lines": 2384,
+        "unique_line_ratio": 0.158,
+        "top_200char_repeat": 5,
+        "reasoning_chars": 90137,
+        "verdict": "LOOP"
+      }
+    }
+  ],
+  "response_top_level_keys": [
+    "choices",
+    "created",
+    "id",
+    "kv_transfer_params",
+    "model",
+    "object",
+    "prompt_logprobs",
+    "prompt_routed_experts",
+    "prompt_text",
+    "prompt_token_ids",
+    "service_tier",
+    "system_fingerprint",
+    "usage"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "community6_appendix_case/1",
+  "slug": "f3",
+  "category": "semantic",
+  "model_key": "qwen3.6-35b-a3b",
+  "doc_id": "hima_1638842",
+  "status": "ok",
+  "parse_status": "ok",
+  "canonical_result_file": "results/final_v001/final_A_qwen3.6-35b-a3b.jsonl",
+  "source_sha256": "ef9d97f3a41c6315d150a611163b1f3b70b75de1364592da62b2c5f783437bec",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "69042cb67c163cc81a4a40e34b9bd11ac99c767894d966935aa2097d6fb70233",
+  "response_text_sha256": "bbd400d41d4c49ad388bb8a063de9682aa35b6ce6aa60209f5ac4f8b15618a61",
+  "sanitized_response_sha256": "04ec3fbf7298e9ac4f81c97a227c0c86e98080044bd4a87746bd28d97fd6d0d1",
+  "token_usage": {
+    "prompt_tokens": 8127,
+    "completion_tokens": 10038,
+    "total_tokens": 18165,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 9997,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "attempt_chain": [],
+  "response_top_level_keys": [
+    "choices",
+    "created",
+    "id",
+    "model",
+    "object",
+    "provider",
+    "service_tier",
+    "system_fingerprint",
+    "usage"
+  ]
+}

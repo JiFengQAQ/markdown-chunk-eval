@@ -1,0 +1,44 @@
+{
+  "schema": "community6_appendix_case/1",
+  "slug": "s1",
+  "category": "best",
+  "model_key": "deepseek-v4-flash-0731",
+  "doc_id": "hima_1219143",
+  "status": "ok",
+  "parse_status": "ok",
+  "canonical_result_file": "results/final_v001/final_A_deepseek-v4-flash-0731.jsonl",
+  "source_sha256": "7993bb1643b8def985e4404cc407ad004e2c4c202a0185abbdc5442bf0ce2594",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "98d675226acf998cf086b4aaa4aca255bca1ab95497b86ee7b5676c8f5d3a15d",
+  "response_text_sha256": "9bb28834a319f15031df8994cfd1d1f8871434878673f95ca5e5b3a5de24e992",
+  "sanitized_response_sha256": "072b3aba359d960660569eb4bf7eabd972a2cb2f2abfd0cbaa9fc80851b9875d",
+  "token_usage": {
+    "prompt_tokens": 8828,
+    "completion_tokens": 10143,
+    "total_tokens": 18971,
+    "is_byok": false,
+    "prompt_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "audio_tokens": 0,
+      "video_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 9067,
+      "image_tokens": 0,
+      "audio_tokens": 0
+    }
+  },
+  "attempt_chain": [],
+  "response_top_level_keys": [
+    "choices",
+    "created",
+    "id",
+    "model",
+    "object",
+    "provider",
+    "service_tier",
+    "system_fingerprint",
+    "usage"
+  ]
+}
