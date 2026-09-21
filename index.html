@@ -1,0 +1,989 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Markdown 语义切分预研 · 简版</title><style>:root{--ink:#17202a;--muted:#607080;--paper:#fff;--bg:#f3f5f7;--line:#dce2e7;--blue:#1f5d89;--mint:#e8f4ef;--amber:#fff4dc;--red:#9d3f37}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;overflow-wrap:anywhere}main{max-width:1100px;margin:auto;padding:28px 20px 80px}.cover{background:#173f5f;color:#fff;border-radius:18px;padding:56px clamp(24px,6vw,72px);margin-bottom:24px}.cover h1{font-size:clamp(2rem,5vw,4rem);line-height:1.08;margin:.25em 0}.cover p{max-width:880px}.eyebrow{letter-spacing:.12em;opacity:.75}section{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:clamp(20px,4vw,38px);margin:18px 0}h2{margin-top:0}.stats,.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.stat,.finding{border-left:4px solid var(--blue);padding:12px;background:#f7fafc}.stat b{display:block;font-size:1.45rem}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:560px}th,td{text-align:left;padding:10px;border-bottom:1px solid var(--line)}th{background:#eef3f7}.note,.review{padding:14px 16px;background:var(--amber);border-left:4px solid #d59b28}.error-group{border-top:2px solid var(--line);padding-top:18px;margin-top:28px}.article-case{border:1px solid var(--line);border-radius:12px;padding:18px;margin:18px 0;min-width:0}.success{border-top:5px solid #478b71}.semantic{border-top:5px solid #c88722}.execution{border-top:5px solid var(--red)}.article-head,.chunk-card>header,.judge-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}.pill{display:inline-block;background:#e6f0f7;color:var(--blue);border-radius:999px;padding:2px 10px;font-size:.82rem}.danger{background:#f7e7e5;color:var(--red)}.review{background:var(--mint);border:0;border-radius:8px}.source,.meta{color:var(--muted);font-size:.84rem}.chunk-card{border-top:1px solid var(--line);padding-top:18px;margin-top:22px;min-width:0}.chunk-text{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;background:#f7f8fa;border:1px solid var(--line);border-radius:8px;padding:16px;max-width:100%;overflow-x:auto}.judge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:10px}.judge{background:#f8fafb;border:1px solid var(--line);border-radius:8px;padding:12px;min-width:0}.judge p{margin:.55em 0}.failure-chain{font-family:ui-monospace,monospace;background:#fff0ee;border:1px solid #ecc5c0;padding:12px;border-radius:8px;overflow-wrap:anywhere}code{white-space:pre-wrap;overflow-wrap:anywhere}@media(max-width:600px){main{padding:10px}.cover,section{border-radius:9px;padding:20px 14px}.article-case{padding:12px}.article-head,.chunk-card>header,.judge-head{display:block}.article-head strong{display:block;margin-top:8px}.judge-grid{grid-template-columns:1fr}.chunk-text{padding:10px;font-size:.78rem}}</style></head><body><main>
+<header class="cover"><div class="eyebrow">Evidence brief · 2026-09-21</div><h1>Markdown 语义切分预研</h1><p>本页仅使用原始用户手册的冻结结果，按文章级完整证据重新核算。</p><p><b>审慎结论：</b>本次用户手册的标题、章节、步骤和提示框相对规整；真实业务内容常含弱标题、隐含上下文、非标准表格、跨段引用和噪声，生产环境效果倾向于更差。此判断是面向实际应用的外推风险判断，不是本批数据测得的因果结论；当前结果应视为偏乐观基线，而非生产保证。</p></header>
+<section data-section="intro"><h2>01 · 简单介绍</h2><p>目标是观察模型能否把 Markdown 用户手册切成可独立理解且内部完整的块。每个成功生成的块由两位判官分别给出独立性、内部完整性、缺失项和理由；页面保留所选文章的全部块与完整理由。</p></section>
+<section data-section="overview"><h2>02 · 必要数字</h2><div class="stats"><div class="stat"><b>48 个执行单元</b>32 ok / 8 failed / 8 atom 超限</div><div class="stat"><b>141 chunks</b>成功运行产生的全部块</div><div class="stat"><b>141 / 140</b>DeepSeek / GLM 有效判决</div><div class="stat"><b>7 / 24 / 1</b>整篇严格成功 / 非严格成功 / 判官不完整</div></div><p class="note">成功率为 32/48（66.67%）。整篇严格成功要求每块均有两位有效判官，且两项均为 3、missing=[]；非严格成功表示运行有分块产出，但至少一块未满足该严格条件，不等同于整篇不可用。</p></section>
+<section data-section="execution"><h2>03 · 模型执行成功表</h2><div class="table-wrap"><table><thead><tr><th>模型</th><th>成功</th><th>failed</th><th>atom 超限</th></tr></thead><tbody><tr><td>deepseek-v4-flash-0731</td><td><b>9/12</b></td><td>1</td><td>2</td></tr><tr><td>qwen3.5-4b</td><td><b>3/12</b></td><td>7</td><td>2</td></tr><tr><td>qwen3.6-35b-a3b</td><td><b>10/12</b></td><td>0</td><td>2</td></tr><tr><td>qwen3.8-27b</td><td><b>10/12</b></td><td>0</td><td>2</td></tr></tbody></table></div><p>每个模型均运行 12 篇原始用户手册。此表记录执行状态，不是质量排名。“atom 超限”一列对应运行记录中的原始状态字段值 status=input_infeasible。</p></section>
+<section data-section="findings"><h2>04 · 调查结论</h2><div class="two-col"><div class="finding"><h3>执行稳定性不同</h3><p>qwen3.6-35b-a3b 与 qwen3.8-27b 均为 10/12 ok；deepseek-v4-flash-0731 为 9/12 ok；qwen3.5-4b 为 3/12 ok。两个 atom 超限输入在各模型中一致出现。</p></div><div class="finding"><h3>严格成功是高门槛</h3><p>32 篇有产出的文章级运行中，7 篇整篇严格成功，24 篇至少一块未满严格条件，1 篇判官不完整。自动判官未经人工锚定，应结合下方全文证据理解。</p></div><div class="finding"><h3>错误来自不同层级</h3><p>atom 超限与空输出属于 0 chunks 执行结果；跨块依赖和标题作用域缺失属于边界问题；源表格表示损坏则不能错误归因给切分模型。</p></div><div class="finding"><h3>适用边界</h3><p>样本是结构规整的用户手册，不能把本批表现直接外推到结构更弱、上下文更隐含的生产内容。</p></div></div></section>
+<section data-section="success"><h2>05 · 文章级完整成功案例</h2><p>保留原有两篇成功案例，均展示文章产生的全部 4 块；每块两位判官均达到严格条件。</p><article class="article-case success"><div class="article-head"><div><span class="pill">完整成功 · 原始用户手册 · deepseek-v4-flash-0731</span><h3>0023_SF-04001002_f8500_抬头显示</h3></div><strong>4 chunks</strong></div><p class="review"><b>全文复核：</b>完整通读 4 块后，文章依次覆盖总览与开关、HUD 高度亮度与显示模式、连续功能组、其余功能与清洁注意。各块从完整小节开始并在小节边界结束，操作条件、步骤、提示均未跨块悬空；两位判官对每块均给出双 3 且 missing 为空。</p><p class="source">结果来源：results_final/final_A_deepseek-v4-flash-0731.jsonl · line 1 · deepseek-v4-flash-0731 · 0023_SF-04001002_f8500_抬头显示<br>源文来源：dataset_v2/shard_A_L2000_s2.jsonl · line 4 · 冻结数据集 · 0023_SF-04001002_f8500_抬头显示 · source SHA256 26080b9b52e35a33ab2403571275209072d1d37aba564f4777b6ce8ada8d1a78</p><article class="chunk-card" data-case-id="ae913cf11e18c648c0af" data-chars="1294" data-sha256="abacc86438fbfaa2d6f68f3a8d7d7045d1873b378f92169820cdf10569448725"><header><h4>Chunk 1</h4><span>1294 字符</span></header><div class="meta"><code>SHA256 abacc86438fbfaa2d6f68f3a8d7d7045d1873b378f92169820cdf10569448725</code></div><pre class="chunk-text">---
+title: &quot;抬头显示&quot;
+directory_path: &quot;车辆概览 / 抬头显示&quot;
+source_url: &quot;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001002_f8500.html?tipsOs=harmonyos4.3&amp;tipsProductRegion=f2n-evr&amp;tipsLang=zh-cn&amp;tipsFunNum=SF-04001002_f8500&amp;systemType=hwtips&amp;docId=0400502915473975&amp;v=101775565874&quot;
+manifest_index: 22
+navi_num: &quot;SF-04001002_f8500&quot;
+---
+
+# 目录路径：车辆概览 / 抬头显示
+
+## 抬头显示
+
+开启**抬头显示**（Head—Up Display，简称为 HUD），当您在驾驶时，无需低头，就能在前风挡玻璃上看到车辆当前的车速、导航、红绿灯倒计时等信息，您还可以开启**AR 增强显示**，无需佩戴智能设备，即可看到 3D 特效与真实道路元素结合的动态实景，帮助您更直观的进行辅助驾驶。
+
+![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/image/202604030YdeZl/p0000331338.png&gt;)
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 抬头显示系统位于驾驶员前方的仪表台处。
+- 驾驶前请检查并确认抬头显示影像的位置和亮度不会妨碍安全驾驶。
+- 抬头显示仅支持显示系统自带地图的导航信息。
+
+### 开启或关闭抬头显示
+
+抬头显示（HUD）默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启或关闭抬头显示：
+
+- 从中控屏顶部向下滑出**控制中心**，将**抬头显示**添加到**控制中心**，保存后即可点击**抬头显示**开启或关闭该功能（请参阅[控制中心](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001003_f8501.html?funNum=SF-04001003_f8501)）。
+- 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，开启或关闭**抬头显示**开关。
+- 唤醒智慧语音，说出您的指令，如：“关闭抬头显示”。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段主题明确，HUD定义、提示和开关步骤完整，指代清晰，无可见缺失或内部断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 277 · deepseek-v4-flash-0731 · 0023_SF-04001002_f8500_抬头显示 · chunk 1 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段完整介绍抬头显示的功能说明、安全提示及开启关闭方法，结构完整、指代清晰，链接均有明确标签，可独立理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 318 · deepseek-v4-flash-0731 · 0023_SF-04001002_f8500_抬头显示 · chunk 1 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="43e1a317356f60953bad" data-chars="1579" data-sha256="adab40688a7041296ca5eef903c2e5d2c10a233c96f9360ea4659ca657a82335"><header><h4>Chunk 2</h4><span>1579 字符</span></header><div class="meta"><code>SHA256 adab40688a7041296ca5eef903c2e5d2c10a233c96f9360ea4659ca657a82335</code></div><pre class="chunk-text">
+### 调节 HUD 高度和亮度
+
+调整主驾座椅坐姿后，您可以通过调节抬头显示的高度和亮度，改善抬头显示的清晰度。
+
+**人工调节**
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式设置抬头显示：
+
+- 唤醒智慧语音，说出您的指令，如：“HUD 高一点”“抬头显示调亮”。
+- 从中控屏顶部下滑出**控制中心**，点击**抬头显示**设置卡片进入设置界面，调节抬头显示的高度和亮度。
+- 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面，调节抬头显示的高度和亮度。
+
+**自动调节 HUD 高度**
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+- 唤醒智慧语音，说出您的指令，如：“自动调节 HUD 高度”，并目视前方，HUD 高度将自动调节至合适位置。
+- 车辆在 P 挡时，调节座椅位置后，目视前方，首次踩下刹车踏板，HUD 高度将自动调节至合适位置。
+
+**自动调节 HUD 亮度**
+
+HUD 亮度始终由系统自动调节，根据您的亮度偏好（默认为 5 挡）和环境明暗变化自动调整。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过左右滑动亮度进度条来设置亮度偏好，0 挡最暗，10 挡最亮。系统会记录您的偏好，并在自动调节亮度时参考这些设置。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- HUD 高度自动调节开关默认开启，如果不需要自动调节，可在中控屏进入**设置 ＞ 显示 ＞ 抬头显示**，关闭高度的**自动**开关。
+- HUD 高度自动调节具备学习机制，若自动调节后不符合用户的驾驶习惯，可在中控屏进入**设置 ＞ 显示 ＞ 抬头显示**，手动微调高度，HUD 高度自动调节再次触发时，会学习用户习惯并调节到合适位置。
+- 亮度进度条并不表示 HUD 的实际显示亮度，不随环境明暗而变化，而是用于手动调整自动亮度的偏移量。
+- 佩戴具有偏光的太阳镜会影响抬头显示的清晰度，请调节抬头显示亮度或取下太阳镜。
+
+### 调节显示模式
+
+您可将抬头显示调节成简洁模式或经典模式，在前风挡玻璃上看到车辆当前的车速、电子眼距离等信息。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动至**显示模式**，可选择使用**经典模式**或**简洁模式**。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+**显示模式**默认为**经典模式**。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段包含标题、说明、步骤和提示，结构完整，对象、条件和操作路径清晰；图片链接不影响文本核心理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 278 · deepseek-v4-flash-0731 · 0023_SF-04001002_f8500_抬头显示 · chunk 2 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段包含完整标题、操作步骤与提示，对象、条件、挡位范围均明确，内部结构完整无断裂，可独立理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 319 · deepseek-v4-flash-0731 · 0023_SF-04001002_f8500_抬头显示 · chunk 2 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="ad0c7fa096493f5b5e54" data-chars="1936" data-sha256="253d8e67da83e66a224aeab46ab081bbb5d98bffb188ab2029feeb8d34a68f83"><header><h4>Chunk 3</h4><span>1936 字符</span></header><div class="meta"><code>SHA256 253d8e67da83e66a224aeab46ab081bbb5d98bffb188ab2029feeb8d34a68f83</code></div><pre class="chunk-text">
+### AR 增强显示
+
+开启后可以增强显示效果，帮助您更直观的进行辅助驾驶，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启 AR 增强显示：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启 AR 增强显示”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域向上滑动，开启**AR 增强显示**开关，可在抬头显示的基础上叠加增强 AR 效果。
+
+### 雪地增强显示
+
+在雪天开启该功能，可以增强抬头显示的清晰度，该功能默认关闭。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启雪地增强显示：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启抬头显示雪地增强显示”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**雪地增强显示**开关，可在雨雪天气增强抬头显示的效果。
+
+### 转向灯激活影像
+
+开启该功能后，转向时前风挡玻璃会显示转向侧的盲区影像画面，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启转向灯激活影像：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启抬头显示转向灯激活影像”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**转向灯激活影像**开关，可以在转向时看到相应侧的盲区影像画面并伴有红色光晕提醒 。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+在**离线模式**下，**转向灯激活影像**将不可用。
+
+### 倒车影像显示
+
+开启该功能后，倒车时前风挡玻璃会显示车辆后方影像画面，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启倒车影像显示：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启抬头显示倒车影像显示”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**倒车影像显示**开关，倒车时前风挡玻璃会显示车辆后方影像画面。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+在**离线模式**下，**倒车影像显示**将不可用。
+
+### 小地图显示
+
+开启该功能后，前风挡玻璃会显示地图路线，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启小地图显示：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启抬头显示小地图显示”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**小地图显示**开关，可以看到前风挡玻璃会显示地图路线。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段包含多个抬头显示功能说明，每个小节结构完整，条件、默认状态和操作步骤清晰，无片段外依赖或内部断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 279 · deepseek-v4-flash-0731 · 0023_SF-04001002_f8500_抬头显示 · chunk 3 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段包含多个完整小节，每个功能均有标题、说明、默认状态及开启方法，对象与结论明确，无指代悬空或结构断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 320 · deepseek-v4-flash-0731 · 0023_SF-04001002_f8500_抬头显示 · chunk 3 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="8cf59cda6197ca134d06" data-chars="1853" data-sha256="13712b464f4ee1486aabb397477bbbb2c8d1a70e209856be2f1c9e85289c7fca"><header><h4>Chunk 4</h4><span>1853 字符</span></header><div class="meta"><code>SHA256 13712b464f4ee1486aabb397477bbbb2c8d1a70e209856be2f1c9e85289c7fca</code></div><pre class="chunk-text">
+### 辅助驾驶意图文字
+
+开启该功能，当车辆处于辅助驾驶模式时，前挡风玻璃将显示辅助驾驶意图文字，让出行更安全，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**辅助驾驶意图文字**开关，当车辆处于辅助驾驶模式时，前挡风玻璃将显示辅助驾驶意图文字。
+
+### AR-HUD 风险预警
+
+开启该功能，在黑夜、暴雨、中大雾等能见度低的环境中，前风挡玻璃会出现预警标识，协助您提前发现风险，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+在中控屏进入**设置 ＞ 系统 ＞ HIMA 实验室**，开启或关闭**AR 风险预警**开关。
+
+### AR-HUD 车道指引
+
+开启该功能后，导航时前风挡玻璃会显示车道指引线，实时指示行车方向，该功能默认关闭。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 系统 ＞ HIMA 实验室**，开启**AR 车道指引**开关。
+2. 当车辆处于手动驾驶模式时，**AR 车道指引**会根据导航路线，在对应路况下显示引导光毯或箭头。
+
+### 箭头自定义
+
+您可以根据喜好选择不同的 AR 箭头效果。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，点击**AR 增强显示**开关，进入**箭头自定义**页面，选择您喜欢的箭头样式，系统将自动保存该箭头效果，并随账号记忆。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+使用或切换**箭头自定义**功能，车辆需处在 P 挡状态下，并打开**抬头显示**开关及**AR 增强显示**开关。
+
+### 红绿灯倒计时
+
+在行车过程中使用导航时，如果遇到红绿灯，您可在前风挡玻璃上看到红绿灯的倒计时提示信息，该功能默认关闭。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，点击开启**红绿灯倒计时**。
+3. 您可点击**红绿灯倒计时**卡片，选择喜欢的红绿灯倒计时动效效果，系统将自动保存该动效效果。
+
+### 清洁和使用注意
+
+请使用清洁干燥的微纤维布轻轻擦拭抬头显示投影仪区域，如有不易擦净的污渍，可将微纤维布略微浸湿再擦拭。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202604240nYdZU/caution.png&gt;)注意
+
+- 请勿在抬头显示投影仪附近放置任何盛有液体的容器，如果液体进入投影仪区域，可能会导致电气故障。
+- 请勿在抬头显示投影仪或挡风玻璃投影区域上放置任何物品和贴纸，否则可能会中断抬头显示指示。
+- 请勿触摸抬头显示投影仪内部或向投影仪内部投掷边缘尖锐的物体，否则可能会导致机械故障。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段由多个完整小节组成，标题明确，步骤、提示和注意项完整，指代可识别，无片段外依赖或内部断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 280 · deepseek-v4-flash-0731 · 0023_SF-04001002_f8500_抬头显示 · chunk 4 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段由多个抬头显示相关功能小节组成，各小节均含标题、功能说明与操作步骤，指代对象（如该功能）均可在同节标题中找到，结尾注意事项完整，孤立阅读可正确理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 321 · deepseek-v4-flash-0731 · 0023_SF-04001002_f8500_抬头显示 · chunk 4 · glm-5.3-flash</div></div></div></article></article><article class="article-case success"><div class="article-head"><div><span class="pill">完整成功 · 原始用户手册 · qwen3.6-35b-a3b</span><h3>0196_SF-04007011_f8300_露营模式</h3></div><strong>4 chunks</strong></div><p class="review"><b>全文复核：</b>完整通读 4 块后，文章按开启方式、能量管理与对外供电、睡眠空间与车内睡眠、露天影院与退出方式分组。标题、方法、前提、提示和注意事项均留在所属内容中；两位判官对每块均给出双 3 且 missing 为空。</p><p class="source">结果来源：results_final/final_A_qwen3.6-35b-a3b.jsonl · line 7 · qwen3.6-35b-a3b · 0196_SF-04007011_f8300_露营模式<br>源文来源：dataset_v2/shard_A_L2000_s2.jsonl · line 5 · 冻结数据集 · 0196_SF-04007011_f8300_露营模式 · source SHA256 e9cd8bf9a028718c11001ec601fa0727c93107b3038dd3f81e0fa43e688d5658</p><article class="chunk-card" data-case-id="9336c521c5cc4f528162" data-chars="836" data-sha256="7d95db2a3718855c3ee2a18f593698258a729bb0513351e88b1ed925d6167216"><header><h4>Chunk 1</h4><span>836 字符</span></header><div class="meta"><code>SHA256 7d95db2a3718855c3ee2a18f593698258a729bb0513351e88b1ed925d6167216</code></div><pre class="chunk-text">---
+title: &quot;露营模式&quot;
+directory_path: &quot;智慧用车 / 情景智能 / 露营模式&quot;
+source_url: &quot;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04007011_f8300.html?tipsOs=harmonyos4.3&amp;tipsProductRegion=f2n-evr&amp;tipsLang=zh-cn&amp;tipsFunNum=SF-04007011_f8300&amp;systemType=hwtips&amp;docId=0400506617732184&amp;v=201775270875&quot;
+manifest_index: 195
+navi_num: &quot;SF-04007011_f8300&quot;
+---
+
+# 目录路径：智慧用车 / 情景智能 / 露营模式
+
+## 露营模式
+
+使用露营模式，您可以规划露营的能量分配、快捷地为其他电器供电，还可以在车内长时间睡眠等，尽享安心舒适的露营体验。
+
+### 开启露营模式
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 使用露营模式前，确保车辆处于 P 挡，影院模式、小憩模式、洗车模式、车内关怀模式已关闭。
+2. 您可以通过以下任一方式进入露营模式。
+
+   - 唤醒智慧语音后，说“打开露营模式”。
+   - 从中控屏顶部向下滑出**控制中心**，点击**露营模式**快捷开关。
+
+     若首次通过**控制中心**开启**露营模式**，需在**控制中心**点击**自定义**，添加**露营模式**快捷开关。
+   - 在中控屏进入**设置 ＞ 智慧场景**，点击**露营模式**。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段完整介绍了露营模式及开启步骤，条件、方式清晰，内部结构连贯，无可见缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 47 · qwen3.6-35b-a3b · 0196_SF-04007011_f8300_露营模式 · chunk 1 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段含标题、功能简介与完整开启步骤，对象、前提条件和三种进入方式均明确，无悬空指代或结构断裂，可独立理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 119 · qwen3.6-35b-a3b · 0196_SF-04007011_f8300_露营模式 · chunk 1 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="98e56c8009afb1358156" data-chars="1259" data-sha256="8e3dce1d75ba812c85d241a524faef5cabf8eee577f6b39a55049981610d80d0"><header><h4>Chunk 2</h4><span>1259 字符</span></header><div class="meta"><code>SHA256 8e3dce1d75ba812c85d241a524faef5cabf8eee577f6b39a55049981610d80d0</code></div><pre class="chunk-text">
+### 露营能量管理
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在露营模式界面点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202612071mzg8p/p0000308968.png&gt;)，进入露营能量管理。
+
+   ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/image/202611180QliqD/p0000346072.png&gt;)
+2. 根据需要，规划预留的回家里程、睡眠时长。
+
+   - **预留里程**：将根据最近一段出行里程自动获取，您也可以自行调整预留里程。
+
+     如果未根据最近一段出行里程自动获取里程，系统将为您提供默认预留里程。
+   - **睡眠时长**：当您需要长时间在车内休息时，可以设置睡眠的时长。
+   - **剩余可用里程**：剩余可用里程将由综合里程去掉预留回家里程、睡眠时长所消耗的里程后自动计算分配，您可以根据剩余可用里程规划用电。
+
+     ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/image/202605092tPlvp/p0000346071.png&gt;)
+
+### 对外供电
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 将 V2L 放电枪正确插入车辆慢充充电口（请参阅[车外给其他电器供电](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-00001000_f8103.html?funNum=SF-00001000_f8103)）。
+2. V2L 放电枪插好后，中控屏弹出提示框，点击提示框上的**允许**开关启用放电功能。
+3. 车辆开始对放电枪插板放电后，您可以进入露营模式界面，查看实时的对外供电功率，或者点击**对外供电**开关，暂停或开启供电。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+系统默认给定供电限值，电量低于供电限值后停止对外供电，您可根据需要进入**设置 ＞ 能量 ＞ 反向供电**，设置供电限值。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段包含完整标题、操作步骤、条件说明和提示，核心对象与结论清晰，无片段外理解障碍，内部结构连贯无断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 48 · qwen3.6-35b-a3b · 0196_SF-04007011_f8300_露营模式 · chunk 2 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>两个小节均含完整标题、操作步骤与提示，对象和条件明确，外部链接仅为补充参阅，内部无断裂或悬空指代。</p><div class="source">results_v2/judge_final_all.jsonl · line 120 · qwen3.6-35b-a3b · 0196_SF-04007011_f8300_露营模式 · chunk 2 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="f67c22d81f69aecd83c7" data-chars="1899" data-sha256="a4f3183a6961f95c82153ebc126e16534accf335bd2b6d111e6e16ec1f64f2e0"><header><h4>Chunk 3</h4><span>1899 字符</span></header><div class="meta"><code>SHA256 a4f3183a6961f95c82153ebc126e16534accf335bd2b6d111e6e16ec1f64f2e0</code></div><pre class="chunk-text">
+### 睡眠空间
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+**一键成床**
+
+1. 使用一键成床前，请先移除前排、第二排座椅上的物品，拆卸前排座椅头枕，收起投影幕布（若您的车辆已选装巨幕投影）。若您的车辆是六座车型且第三排座椅靠背处于折叠状态，请先移除座椅靠背上的物品。
+2. 进入露营模式界面，点击**睡眠空间**。
+3. 根据成床引导视频确认成床准备工作，确认完毕后，点击**一键成床**，前排座椅靠背将自动向后展开，若您的车辆是六座车型，第二排座椅同时向后移动。
+4. 座椅调整完毕后，铺上与成床区域相匹配的充气床垫。
+
+**一键收床**
+
+1. 当您需要收床时，请先移除前排、第二排座椅上的物品。
+2. 进入露营模式界面，点击**睡眠空间**。
+3. 根据收床引导视频确认收床准备工作，确认完毕后，点击**一键收床**，前排座椅靠背将自动恢复至成床前位置，若您的车辆是六座车型，第二排座椅也将自动恢复至成床前位置。
+4. 将头枕安装至前排座椅（请参阅[拆装前排座椅头枕](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-03002006_f8103.html?funNum=SF-03002006_f8103)）。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+第三排座椅靠背处于折叠状态时开启一键成床，将先自动抬起第三排座椅靠背，再进行一键成床。
+
+### 车内睡眠
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 启用车内睡眠前，请保持电量大于 30 % 。
+2. 在露营模式界面点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202612071mzg8p/p0000308968.png&gt;)，进入能量管理，设置睡眠时长。
+
+   当车辆的剩余电量无法满足您设置的睡眠时长时，无法开启车内睡眠，车辆将自动启动增程器补电。
+3. 您可以通过以下任一方式开启或关闭车内睡眠。
+
+   - 唤醒智慧语音后，说“开启车内睡眠”，开启车内睡眠；说“关闭车内睡眠”，退出车内睡眠。
+   - 进入露营模式界面，点亮**车内睡眠**开关，开启车内睡眠；再次点击**车内睡眠**开关，退出车内睡眠。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 启用车内睡眠后，系统自动开启空调，并熄灭仪表显示屏、副驾屏和自动大灯，关闭增程器、离车闭锁、自动雨刮、自动除雾、氛围灯、HUD、遮阳帘以及所有车窗，锁止所有车门。
+- 启用车内睡眠后，燃油检测、燃油补电、远程控制车辆、哨兵模式功能暂时不可用。
+- 当车内睡眠处于启用状态时，打开任一车门将自动解锁所有车门，关闭车门后所有车门将不会自动上锁。
+- 电量小于 10 %、切换挡位、切换账号或电源异常时，车内睡眠将自动退出。
+- 退出车内睡眠后，仪表显示屏、副驾屏、自动大灯、增程器、自动雨刮、自动除雾、氛围灯、HUD、离车闭锁、远程控制车辆恢复到启用车内睡眠前的状态。
+- 车辆充电时，启用或退出车内睡眠将不受电量限制。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202604240nYdZU/caution.png&gt;)注意
+
+- 启用车内睡眠后，离车闭锁功能暂时不可用，当您远离车辆时，请关注您的个人财产与车辆安全。
+- 电量小于 10 %、电源异常导致退出车内睡眠时，所有车窗高度将自动下降 10 % ，以确保车内空气流通。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段结构完整，标题与步骤清晰，条件、单位、引用关系明确，可独立理解，无明显内部断裂或片段外依赖。</p><div class="source">results_v2/judge_final_all.jsonl · line 49 · qwen3.6-35b-a3b · 0196_SF-04007011_f8300_露营模式 · chunk 3 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段包含“睡眠空间”和“车内睡眠”两个完整小节，操作步骤、前提条件、提示与注意事项齐全，对象和适用条件均明确，无可见断裂或悬空指代。</p><div class="source">results_v2/judge_final_all.jsonl · line 121 · qwen3.6-35b-a3b · 0196_SF-04007011_f8300_露营模式 · chunk 3 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="8beedf1da5bba3cfd165" data-chars="1515" data-sha256="7ad5cb57249cf1a3b9d36da15a1c06c7561b2693bdba7b26d7f018dae38aa83b"><header><h4>Chunk 4</h4><span>1515 字符</span></header><div class="meta"><code>SHA256 7ad5cb57249cf1a3b9d36da15a1c06c7561b2693bdba7b26d7f018dae38aa83b</code></div><pre class="chunk-text">
+### 露天影院
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在露营模式界面点击**露天影院**。
+2. 点击**确定**开启后备箱，进入安装引导界面。
+3. 点击**查看引导**，根据界面提示，完成车外观影场景布置，点击**完成**开启露天影院。
+
+   若您熟悉且已完成观影场景布置，点击**安装完成**可直接开启露天影院。
+4. 在露天影院界面，您可以根据需要使用以下服务进行投影。
+
+   - 点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202612071mzg8p/p0000308968.png&gt;)进入跨屏协助界面，请参见[巨幕投影](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001014_f8101.html?funNum=SF-04001014_f8101)。
+   - 点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202601072ztkxl/p0000308984.png&gt;)进入互联服务界面，请参见[手机投屏](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04005003_f8300.html?funNum=SF-04005003_f8300)、[手机操控后排屏](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001014_f8102.html?funNum=SF-04001014_f8102)、[生态流转](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04005011_f8500.html?funNum=SF-04005011_f8500)。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 使用露天影院前，请先在车主 APP 购买车载投影露天影院配套件。
+- 开启露天影院时，系统自动开启光机、关闭车外灯光，若您的车辆是六座车型，将自动折叠三排座椅。
+- 点击**退出露天影院**前，建议先手动拆除折叠镜头与露营幕布。
+
+### 退出露营模式
+
+您可以通过以下任一方式退出露营模式。
+
+- 唤醒智慧语音后，说“退出露营模式”。
+- 从中控屏顶部向下滑出**控制中心**，点击**露营模式**快捷开关进入露营模式界面，点击**结束露营**。
+- 在中控屏进入**设置 ＞ 智慧场景 ＞ 露营模式**，点击**结束露营**。
+- 将车辆挡位切换至非 P 挡状态。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段包含露天影院操作步骤、提示及退出露营模式方式，内容完整，标题与正文衔接自然，无可见缺失或断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 50 · qwen3.6-35b-a3b · 0196_SF-04007011_f8300_露营模式 · chunk 4 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段含露天影院操作步骤、提示及退出露营模式方法，主题明确、步骤完整，前提条件已在提示中说明，无可见断裂或片段外依赖。</p><div class="source">results_v2/judge_final_all.jsonl · line 122 · qwen3.6-35b-a3b · 0196_SF-04007011_f8300_露营模式 · chunk 4 · glm-5.3-flash</div></div></div></article></article></section>
+<section data-section="error-cases"><h2>06 · 六类错误案例</h2><p>按指定的 1、2、4、5、6、7 六类各选一例。第 1 类 atom 超限与第 2 类空输出真实为 0 chunks；后四类均以文章×模型为单位展示全文全部 chunks，并在文章顶部说明命中块与其余块表现。</p><div class="error-group"><h3>1 · atom 超限</h3><article class="article-case execution error-case" data-error-category="input_infeasible"><div class="article-head"><div><span class="pill danger">1 · atom 超限 · 原始用户手册</span><h3>deepseek-v4-flash-0731 / 0025_SF-04001003_f8500_中控屏简介</h3></div><strong>0 chunks</strong></div><p>该运行没有生成可供语义评估的分块，因此只列真实失败链与原始输入证据，不伪造分块。</p><div class="failure-chain">status=input_infeasible → parse_status=not_attempted → error_code=input_infeasible → finish_reason=不适用（预检拦截，未调用模型）</div><p>超限证据：运行系统在把备选分割（按原文顺序编号的 atom 清单）提供给模型之前先做预检，发现文档中存在单个 atom 已超过长度上限 L=2000：oversize_atoms=<code>[{&quot;id&quot;:&quot;a22&quot;,&quot;chars&quot;:4092}]</code>，即 a22=4092 > L=2000。该 atom 是一整块提示框及其后的常见图标表（状态栏与工具栏两张表），按“只能沿现有 atom 边界切分、不得在 atom 内部拆分”的规则，这份备选分割不存在任何合法切法，因此该单元在调用模型之前即被记录为 atom 超限并终止：attempts=0，未调用模型，无 API 消耗。</p><p><b>原始输入：</b>6484 字符 · 23 atoms · source SHA256 <code>ec423c39d99e8284a8020be52afacedb46c8e1d1e7ea7006334eb61240d15b60</code> · request SHA256 <code>662ebf5ed424b93decd28acd29ad43ff33fa7672bd2221a506d2e6576ff3dfbd</code></p><p class="source">运行行：results_final/final_A_deepseek-v4-flash-0731.jsonl · line 2 · deepseek-v4-flash-0731 · 0025_SF-04001003_f8500_中控屏简介<br>源文行：dataset_v2/shard_A_L2000_s1.jsonl · line 1 · 冻结数据集 · 0025_SF-04001003_f8500_中控屏简介</p></article></div><div class="error-group"><h3>2 · 空输出</h3><article class="article-case execution error-case" data-error-category="empty_output"><div class="article-head"><div><span class="pill danger">2 · 空输出 · 原始用户手册</span><h3>qwen3.5-4b / 0136_SF-01001005_f8100_制动系统功能</h3></div><strong>0 chunks</strong></div><p>该运行没有生成可供语义评估的分块，因此只列真实失败链与原始输入证据，不伪造分块。</p><div class="failure-chain">status=failed → parse_status=empty_output → error_code=empty_output → finish_reason=length</div><p>空输出证据：finish_reason=length，response_chars=0，max_tokens=16384，attempts=1。</p><p><b>原始输入：</b>6358 字符 · 119 atoms · source SHA256 <code>15bbd49191f8a9dac4e50e7884cef91bbef942c68a6ba8c32bd651c8701ccb32</code> · request SHA256 <code>8dbc5a4d31b90ef99f3af3f55a0b4c7469b3b92f9caf016244c21e6ad24720ef</code></p><p class="source">运行行：results_final/final_A_qwen3.5-4b.jsonl · line 5 · qwen3.5-4b · 0136_SF-01001005_f8100_制动系统功能<br>源文行：dataset_v2/shard_A_L2000_s1.jsonl · line 2 · 冻结数据集 · 0136_SF-01001005_f8100_制动系统功能</p></article></div><div class="error-group"><h3>4 · 跨块依赖</h3><article class="article-case semantic error-case" data-error-category="cross_chunk_dependency"><div class="article-head"><div><span class="pill">4 · 跨块依赖 · 原始用户手册 · qwen3.6-35b-a3b</span><h3>0203_SF-04007003_f8300_哨兵模式</h3></div><strong>5 chunks</strong></div><p class="review"><b>全文复核：</b>全文 5 块均已展示。Chunk 2 以“立即开启哨兵模式”空标题结束，具体步骤落到 Chunk 3；Chunk 4 以“以下方式主动退出”结束，列表落到 Chunk 5，两位判官均以 missing 记录后一处跨块依赖。Chunk 1 基本完整但一位判官指出缩写未定义；Chunk 3 的首段又失去所属标题；Chunk 5 余下内容完整但开头列表失去作用域。</p><p class="source">结果来源：results_final/final_A_qwen3.6-35b-a3b.jsonl · line 9 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式<br>源文来源：dataset_v2/shard_A_L2000_s2.jsonl · line 2 · 冻结数据集 · 0203_SF-04007003_f8300_哨兵模式 · source SHA256 effd78795763191a1cdcfdf3b2d3484e1c8311bc5c24f7597bf747e18e757b07</p><article class="chunk-card" data-case-id="4657978bbceff1ecb0fb" data-chars="1878" data-sha256="8a573e467cb1224eafb82c15193076764da8766a86918f3c30a6d7617fdb5770"><header><h4>Chunk 1</h4><span>1878 字符</span></header><div class="meta"><code>SHA256 8a573e467cb1224eafb82c15193076764da8766a86918f3c30a6d7617fdb5770</code></div><pre class="chunk-text">---
+title: &quot;哨兵模式&quot;
+directory_path: &quot;智慧用车 / 情景智能 / 哨兵模式&quot;
+source_url: &quot;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04007003_f8300.html?tipsOs=harmonyos4.3&amp;tipsProductRegion=f2n-evr&amp;tipsLang=zh-cn&amp;tipsFunNum=SF-04007003_f8300&amp;systemType=hwtips&amp;docId=0400503644004322&amp;v=101775565874&quot;
+manifest_index: 202
+navi_num: &quot;SF-04007003_f8300&quot;
+---
+
+# 目录路径：智慧用车 / 情景智能 / 哨兵模式
+
+## 哨兵模式
+
+哨兵模式开启后，会持续检测车辆周围发生的事件，根据威胁的严重程度进行警示、录制视频或向车主手机 **AITO** 应用和车端推送通知消息等。哨兵模式默认关闭。
+
+### 功能介绍
+
+驾驶员离车落锁下电后，车辆会进入设防状态，车辆的摄像头等传感器会持续工作。当检测到刮擦、碰撞、撬门等事件时，车辆会亮起车辆中控屏等以警示可能的侵害人、同步录制和存储车辆周围环境视频以保留证据，还可能向车主手机 AITO 应用和车端推送通知消息以提醒车主及时查看、处理车辆情况。车主可以在中控屏上查看已保存的哨兵事件视频。
+
+- 若检测到刮擦、人在车辆周围驻足、车辆轻微振动等一般威胁，车辆中控屏会亮起并展示特定影像，以警示车外人员；同时会录制周围环境视频并存储在车辆外置存储设备上。
+- 若检测到碰撞、撬门、撬前后备箱、砸窗等严重威胁，除亮起中控屏展示影像、录制并存储周围环境视频外，车辆还会持续闪烁车辆应急报警灯并通过手机 AITO 应用向车主发送通知消息。
+
+哨兵模式支持以下方式：
+
+- 立即开启：立即开启哨兵模式。每次启用仅单次生效。
+- 预约开启：支持以 10 分钟为间隔，预约最迟次日 23：50 前开启哨兵模式。每次启用仅单次生效。
+- 自动开启：启用后，车辆会在驾驶员离开车辆并锁车时，约 1 分钟内自动开启哨兵模式。自动开启长期生效，驾驶员无需每次手动开启。若车辆中控屏中已经设置了**家**、**公司**两个常用地点的地址，则驾驶员还可以设置在这两个位置不自动开启哨兵模式，以减少电量与车辆组件寿命消耗。
+
+  ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/2026112711djWl/p0000346696.png&gt;)
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 使用哨兵模式时，系统会访问摄像头权限、车辆外置存储权限，以检测和记录威胁车辆的可疑行为。因涉及到监控和录像，部分区域无法开启哨兵模式。可开启哨兵模式的区域中，驾驶员仍需在遵守当地法律法规和所在场所摄像头使用规定的前提下使用哨兵模式，并承担相应的全部责任。
+- 哨兵模式记录的视频数据会存储在车辆外置存储设备中，为确保视频文件可正确存储，请使用符合以下要求的外置存储设备：
+
+  - 存储空间大于或等于 64 GB。推荐使用存储空间为 128 GB 的外置存储设备。
+  - 最低写入速度至少达到 10 MB/s。推荐使用 Class 10 及以上的外置存储设备。
+  - 已正确格式化为 exFAT 文件格式，其他格式可能导致视频无法存储或使用。
+- 无充足可用空间时，系统会按照时间先后顺序自动删除已保存的时间较早的一般威胁视频。建议驾驶员定期维护存储空间，及时查看、备份、手工删除相关数据，保证系统良好运行。
+- 折叠外后视镜可能改变摄像头视角，产生视觉检测盲区。开启哨兵模式期间，建议保持外后视镜展开，以减少哨兵模式漏报风险。
+- 哨兵模式运行时会持续消耗电量，为减少电量与车辆组件寿命消耗，建议在安全停车环境下不要长时间开启哨兵模式。
+- 高风险视频存储期间，无法激活 RPA 或 VPD 功能，请在视频存储完成后重试。
+- 未锁车时哨兵模式无法监控和录像，请及时锁车。
+
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 2/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;missing_definition&quot;,&quot;evidence&quot;:&quot;无法激活 RPA 或 VPD 功能&quot;}]</code></div><p>片段自包含介绍哨兵模式功能与提示，条件、单位完整；仅 RPA、VPD 缩写未定义，核心仍可理解，属轻微缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 56 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 1 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段为完整主题页：哨兵模式的功能、威胁分级、三种开启方式及使用提示均自足清晰，条件与例外明确；内部标题、列表、图片结构连贯，无可见断裂或悬空指代。</p><div class="source">results_v2/judge_final_all.jsonl · line 128 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 1 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="8e4624bc3a7065ffbde7" data-chars="1453" data-sha256="962e7f83bb3a16a7cc4963a9158c182b80636a90fcb380bc806615174497ccb8"><header><h4>Chunk 2</h4><span>1453 字符</span></header><div class="meta"><code>SHA256 962e7f83bb3a16a7cc4963a9158c182b80636a90fcb380bc806615174497ccb8</code></div><pre class="chunk-text">###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202606041hbdYe/warning.png&gt;)警告
+
+- 请勿仅依靠哨兵模式抵御可能遇到的各种安全威胁，哨兵模式无法在涉及车辆损坏的所有情况下都触发安全警报。请驾驶员始终保持警惕，尽量将爱车停靠在有监控保护的区域。
+- 手机上接收到哨兵模式的通知消息后，建议驾驶员及时查看车辆状况和哨兵事件视频，避免造成更大损失。
+
+### 前提条件
+
+确保已在车机端登录过车主账号，并已激活 ADS 软件服务。
+
+### 设置哨兵模式参数
+
+哨兵模式启用时，默认检测灵敏度为**适中**。驾驶员可以根据需要和个人偏好进行修改。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 使用以下任一方式进入哨兵模式界面：
+
+   - 在中控屏 ADS APP 上进入![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202609151pSokx/p0000308859.png&gt;) **＞ 哨兵模式**。
+   - 在中控屏进入**设置 ＞ 车辆控制 ＞ 更多 ＞ 哨兵模式**。
+   - P 挡下，在顶部状态栏点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202610260bkmef/p0000308997.png&gt;)哨兵模式图标。
+   - 从中控屏顶部下滑出控制中心，点击**哨兵模式**快捷键（快捷键添加方式请参阅[控制中心](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001003_f8501.html?funNum=SF-04001003_f8501)）。
+   - 通过**打开哨兵**语音指令。详情请参阅[语音指令](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04002001_f8302.html?funNum=SF-04002001_f8302)章节。
+   - 通过手机 AITO 应用 进入哨兵模式界面。
+2. 点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202607100fqtlm/p0000308985.png&gt;)并设置如下参数。
+
+   | 参数 | 说明 |
+   | --- | --- |
+   | **检测灵敏度** | 检测车辆周围事件的灵敏度。支持两种设置：  - **适中**（默认值）：捕捉车辆周围的高风险事件，以免过度打扰车主。 - **较高**：捕捉车辆周围的高风险事件和低风险事件（例如行人路过），可能会增加哨兵视频数量。 |
+
+### 立即开启哨兵模式
+
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 2/3 · 内部完整 1/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;other&quot;,&quot;evidence&quot;:&quot;点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202607100fqtlm/p0000308985.png&gt;)并设置如下参数&quot;},{&quot;type&quot;:&quot;cross_chunk_dependency&quot;,&quot;evidence&quot;:&quot;### 立即开启哨兵模式&quot;}]</code></div><p>主题和主要结论可理解，但关键点击图标无替代文字，末尾小节标题后无内容，方法步骤不完整；内部末尾结构断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 57 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 2 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 2/3 · 内部完整 2/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;other&quot;,&quot;evidence&quot;:&quot;### 立即开启哨兵模式&quot;}]</code></div><p>片段主题明确，警告、前提条件、参数说明与操作步骤均完整可读，表格含表头；但结尾标题&quot;立即开启哨兵模式&quot;后无任何内容，属可见结构残缺，故内部与独立理解均略受影响。</p><div class="source">results_v2/judge_final_all.jsonl · line 129 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 2 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="eb98e3d10960bd0572af" data-chars="1769" data-sha256="ae53905481a9c33ac0c9de8da3561ebbda0201a13f7963cd535688aeb6460903"><header><h4>Chunk 3</h4><span>1769 字符</span></header><div class="meta"><code>SHA256 ae53905481a9c33ac0c9de8da3561ebbda0201a13f7963cd535688aeb6460903</code></div><pre class="chunk-text">- 在中控屏 ADS APP 上进入![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202609151pSokx/p0000308859.png&gt;) **＞ 哨兵模式**，随后点击**立即开启**。
+- 在中控屏进入**设置 ＞ 车辆控制 ＞ 更多 ＞ 哨兵模式**，随后点击**立即开启**。
+- P 挡下，在顶部状态栏点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202610260bkmef/p0000308997.png&gt;)哨兵模式图标，随后点击**立即开启**。
+- 从中控屏顶部下滑出控制中心，点击**哨兵模式**快捷键（快捷键添加方式请参阅[控制中心](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001003_f8501.html?funNum=SF-04001003_f8501)），随后点击**立即开启**。
+- 参考以上方式或通过语音**打开哨兵**进入哨兵界面，然后通过**立即开启**等语音指令开启。详情请参阅[语音指令](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04002001_f8302.html?funNum=SF-04002001_f8302)章节。
+- 通过手机 AITO 应用开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 使用**立即开启**时，请于开启后 15 分钟内离车落锁，否则本次开启自动失效。
+- 开启哨兵模式后，若驾乘人员仅上车开门取物但不切换挡位，不会导致哨兵模式退出（车辆会临时退出监控状态）。但请于 15 分钟内离车落锁。
+
+### 预约开启哨兵模式
+
+- 在中控屏 ADS APP 上进入![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202609151pSokx/p0000308859.png&gt;) **＞ 哨兵模式**，随后点击**预约开启**并设置开启时间。
+- 在中控屏进入**设置 ＞ 车辆控制 ＞ 更多 ＞ 哨兵模式**，随后点击**预约开启**并设置开启时间。
+- P 挡下，在顶部状态栏点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202610260bkmef/p0000308997.png&gt;)哨兵模式图标，随后点击**预约开启**并设置开启时间。
+- 从中控屏顶部下滑出控制中心，点击**哨兵模式**快捷键（快捷键添加方式请参阅[控制中心](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001003_f8501.html?funNum=SF-04001003_f8501)），随后点击**预约开启**并设置开启时间。
+- 参考以上方式或通过语音**打开哨兵**进入哨兵界面，然后通过**预约开启**等语音指令开启。详情请参阅[语音指令](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04002001_f8302.html?funNum=SF-04002001_f8302)章节。
+- 通过手机 AITO 应用开启。
+
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段完整列出哨兵模式开启方式、提示和预约开启步骤，条件与引用明确，内部结构连贯，无可见缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 58 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 3 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 2/3 · 内部完整 2/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;missing_heading_scope&quot;,&quot;evidence&quot;:&quot;- 在中控屏 ADS APP 上进入&quot;}]</code></div><p>首节列表缺少节标题（与后文&#x27;预约开启哨兵模式&#x27;节不对称），主题需由正文推断；但开启步骤、P 挡条件、15 分钟限制及提示均完整可懂，属轻微结构残缺。</p><div class="source">results_v2/judge_final_all.jsonl · line 130 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 3 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="546e7f0630541f18c753" data-chars="1587" data-sha256="bdb2b53060828c7f2e48a3a1e96e969fc55816376acc1bf438dda8726ab1abad"><header><h4>Chunk 4</h4><span>1587 字符</span></header><div class="meta"><code>SHA256 bdb2b53060828c7f2e48a3a1e96e969fc55816376acc1bf438dda8726ab1abad</code></div><pre class="chunk-text">###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 使用**预约开启**时，仅支持设置最迟次日 23：50 前的预约开启，若已到达开启时间但不满足开启条件会导致该次预约开启失败。详情请参阅局限性。
+- 开启哨兵模式后，若驾乘人员仅上车开门取物但不切换挡位，不会导致哨兵模式退出（车辆会临时退出监控状态）。但请于 15 分钟内离车落锁。
+- 预约后，驾驶员可以在哨兵模式界面查看或修改预约时间。
+
+### 自动开启哨兵模式
+
+- 在中控屏 ADS APP 上进入![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202609151pSokx/p0000308859.png&gt;) **＞ 哨兵模式**，随后点击**自动开启**。
+- 在中控屏进入**设置 ＞ 车辆控制 ＞ 更多 ＞ 哨兵模式**，随后点击**自动开启**。
+- P 挡下，在顶部状态栏点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202610260bkmef/p0000308997.png&gt;)哨兵模式图标，随后点击**自动开启**。
+- 从中控屏顶部下滑出控制中心，点击**哨兵模式**快捷键（快捷键添加方式请参阅[控制中心](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001003_f8501.html?funNum=SF-04001003_f8501)），随后点击**自动开启**。
+- 参考以上方式或通过语音**打开哨兵**进入哨兵界面，然后通过**自动开启**等语音指令开启。详情请参阅[语音指令](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04002001_f8302.html?funNum=SF-04002001_f8302)章节。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 打开**自动开启**开关后，可以按需勾选**以下位置不开启**列表中的**家**或**公司**，车辆在对应地点不会自动开启哨兵模式。**家**和**公司**需要提前在车辆中控屏进行设置。
+- 打开**自动开启**开关后，可以点击界面中的盾牌图标，单次启用或禁用哨兵模式。![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202603091vbyWe/P0000327741.png&gt;)表示已启用哨兵模式，![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202603011ktMke/p0000308963.png&gt;)表示已禁用哨兵模式。
+- 驾驶员解锁车辆（未切换挡位）期间，车辆会临时退出监控状态（不会退出哨兵模式），锁车后车辆会重新进入监控状态。
+
+### 主动退出哨兵模式
+
+驾驶员可以通过以下方式主动退出哨兵模式。
+
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 2/3 · 内部完整 1/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;orphan_reference&quot;,&quot;evidence&quot;:&quot;详情请参阅局限性。&quot;},{&quot;type&quot;:&quot;cross_chunk_dependency&quot;,&quot;evidence&quot;:&quot;驾驶员可以通过以下方式主动退出哨兵模式。&quot;}]</code></div><p>大部分内容可独立理解，但“局限性”无对应链接，末尾“以下方式”后无内容，主动退出步骤依赖片段外，结构不完整。</p><div class="source">results_v2/judge_final_all.jsonl · line 59 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 4 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 2/3 · 内部完整 2/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;cross_chunk_dependency&quot;,&quot;evidence&quot;:&quot;驾驶员可以通过以下方式主动退出哨兵模式。&quot;}]</code></div><p>提示与自动开启部分基本自足，但开头提示依赖前文预约开启功能背景，结尾&quot;主动退出&quot;仅引出&quot;以下方式&quot;即截断，列表缺失，结构不完整。</p><div class="source">results_v2/judge_final_all.jsonl · line 131 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 4 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="3ee2da0d6530d2bc5f72" data-chars="1854" data-sha256="3e36f3874ba9795435d863c5bebc5ec54ec46acc98090e2416fbbb0800c56ff1"><header><h4>Chunk 5</h4><span>1854 字符</span></header><div class="meta"><code>SHA256 3e36f3874ba9795435d863c5bebc5ec54ec46acc98090e2416fbbb0800c56ff1</code></div><pre class="chunk-text">- 将车辆挂入非 P 挡。
+- 在中控屏 ADS APP 上进入![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202609151pSokx/p0000308859.png&gt;) **＞ 哨兵模式**，随后按提示操作。
+- 在中控屏进入**设置 ＞ 车辆控制 ＞ 更多 ＞ 哨兵模式**，随后按提示操作。
+- P 挡下，在顶部状态栏点击![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202610260bkmef/p0000308997.png&gt;)哨兵模式图标，随后按提示操作。
+- 从中控屏顶部下滑出控制中心，点击**哨兵模式**快捷键（快捷键添加方式请参阅[控制中心](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001003_f8501.html?funNum=SF-04001003_f8501)），随后按提示操作。
+- 参考以上方式或通过语音**打开哨兵**进入哨兵界面，然后通过**关闭哨兵模式**等语音指令退出哨兵模式，详情请参阅[语音指令](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04002001_f8302.html?funNum=SF-04002001_f8302)章节。
+- 通过手机 AITO 应用 退出。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+除主动退出外，哨兵模式也会在特定场景下自动退出。详细请参阅局限性。
+
+### 查看哨兵事件视频
+
+在中控屏进入**行车记录仪 ＞ 哨兵录像**，查看已保存的哨兵事件视频。
+
+### 局限性
+
+- 哨兵模式是一项车辆安全监测功能，无法应对所有交通天气、能见度和道路状况。
+- 车辆处于以下任一状态时，无法开启哨兵模式：
+
+  - 车辆处于非 P 挡。
+  - 车辆动力电池电量 ＜ 20 % 且未处于充电状态。
+  - 车辆处于充电状态，但动力电池电量 ≤ 5 %。
+  - 车辆开启了与哨兵模式互斥的情景模式，例如维修模式、整车离线模式、展车模式等。
+  - 车辆正在进行 OTA 升级。
+  - 车辆状态异常或系统故障。
+- 开启哨兵模式后，遇到以下任一场景时，哨兵模式会自动退出：
+
+  - 车辆未在哨兵模式开启后 15 分钟内落锁。
+  - 车辆挡位切换到非 P 挡。
+  - 车辆动力电池电量 ＜ 15 % 且未处于充电状态。
+  - 车辆虽处于充电状态，但动力电池电量 ＜ 15 % 且持续减少。
+  - 车辆开启了与哨兵模式互斥的情景模式，例如维修模式、整车离线模式、展车模式等。
+  - 车辆激活了 RPA 或 VPD 功能。
+  - 车辆状态异常或系统故障。
+- 携带星闪钥匙接近车辆，车辆会临时退出监控状态（不会退出哨兵模式）。若 3 分钟内未解锁车辆并上车，车辆会重新进入监控状态。
+- 手机网络连接不好或未开启 **AITO** 应用通知权限均会影响手机接收哨兵模式通知消息。
+- 哨兵事件视频仅存储在外置存储设备中。因外置存储设备损坏、丢失、用户误删除等导致视频文件丢失或因其可用空间不足导致时间较早的一般威胁视频被删除覆盖时，无法提供文件恢复服务。
+- 远程开启后备箱时，哨兵模式对碰撞、剐蹭、异常震动的检测功能将被抑制。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 车辆落锁后 30 秒内的视频无法保存。车辆解锁前或退出哨兵模式前 1 分钟内的视频可能无法保存。
+- 开启哨兵模式后，如果执行 OTA 升级或者到达预约升级时间，则自动退出哨兵模式进行升级，升级完毕后自动重新开启哨兵模式。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 2/3 · 内部完整 2/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;cross_chunk_dependency&quot;,&quot;evidence&quot;:&quot;将车辆挂入非 P 挡。&quot;}]</code></div><p>片段主体围绕哨兵模式，但开头列表缺少总起标题，首条“将车辆挂入非 P 挡”与后续进入步骤并列，需前文才能明确其归属；内部结构基本完整，有轻微突兀。</p><div class="source">results_v2/judge_final_all.jsonl · line 60 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 5 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 2/3 · 内部完整 2/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;missing_heading_scope&quot;,&quot;evidence&quot;:&quot;将车辆挂入非 P 挡&quot;}]</code></div><p>开头列表缺少所属标题，首条“将车辆挂入非P挡”的目的需靠后文“退出哨兵模式”等字样推断；其余提示、查看视频与局限性内容完整清晰，故两项均评2。</p><div class="source">results_v2/judge_final_all.jsonl · line 132 · qwen3.6-35b-a3b · 0203_SF-04007003_f8300_哨兵模式 · chunk 5 · glm-5.3-flash</div></div></div></article></article></div><div class="error-group"><h3>5 · 定义或标题作用域缺失</h3><article class="article-case semantic error-case" data-error-category="missing_context"><div class="article-head"><div><span class="pill">5 · 定义或标题作用域缺失 · 原始用户手册 · qwen3.5-4b</span><h3>0023_SF-04001002_f8500_抬头显示</h3></div><strong>4 chunks</strong></div><p class="review"><b>全文复核：</b>全文 4 块均已展示。Chunk 2 从亮度调节“方法”直接开始，GLM 判官以 missing_heading_scope 明确记录其缺少所属标题；Chunk 3、4 还分别遗留上一功能的提示。Chunk 1 完整且双判官均为双 3；其余主体小节大体完整，因此本例用于说明局部标题作用域缺失，不代表整篇不可理解。</p><p class="source">结果来源：results_final/final_A_qwen3.5-4b.jsonl · line 1 · qwen3.5-4b · 0023_SF-04001002_f8500_抬头显示<br>源文来源：dataset_v2/shard_A_L2000_s2.jsonl · line 4 · 冻结数据集 · 0023_SF-04001002_f8500_抬头显示 · source SHA256 26080b9b52e35a33ab2403571275209072d1d37aba564f4777b6ce8ada8d1a78</p><article class="chunk-card" data-case-id="9a3a1b1e97e1c958e2fa" data-chars="1937" data-sha256="6014d8aa81941e681b31d6b91af40bf009c78c8f65f264c2bf23292a2a33510a"><header><h4>Chunk 1</h4><span>1937 字符</span></header><div class="meta"><code>SHA256 6014d8aa81941e681b31d6b91af40bf009c78c8f65f264c2bf23292a2a33510a</code></div><pre class="chunk-text">---
+title: &quot;抬头显示&quot;
+directory_path: &quot;车辆概览 / 抬头显示&quot;
+source_url: &quot;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001002_f8500.html?tipsOs=harmonyos4.3&amp;tipsProductRegion=f2n-evr&amp;tipsLang=zh-cn&amp;tipsFunNum=SF-04001002_f8500&amp;systemType=hwtips&amp;docId=0400502915473975&amp;v=101775565874&quot;
+manifest_index: 22
+navi_num: &quot;SF-04001002_f8500&quot;
+---
+
+# 目录路径：车辆概览 / 抬头显示
+
+## 抬头显示
+
+开启**抬头显示**（Head—Up Display，简称为 HUD），当您在驾驶时，无需低头，就能在前风挡玻璃上看到车辆当前的车速、导航、红绿灯倒计时等信息，您还可以开启**AR 增强显示**，无需佩戴智能设备，即可看到 3D 特效与真实道路元素结合的动态实景，帮助您更直观的进行辅助驾驶。
+
+![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/image/202604030YdeZl/p0000331338.png&gt;)
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 抬头显示系统位于驾驶员前方的仪表台处。
+- 驾驶前请检查并确认抬头显示影像的位置和亮度不会妨碍安全驾驶。
+- 抬头显示仅支持显示系统自带地图的导航信息。
+
+### 开启或关闭抬头显示
+
+抬头显示（HUD）默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启或关闭抬头显示：
+
+- 从中控屏顶部向下滑出**控制中心**，将**抬头显示**添加到**控制中心**，保存后即可点击**抬头显示**开启或关闭该功能（请参阅[控制中心](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001003_f8501.html?funNum=SF-04001003_f8501)）。
+- 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，开启或关闭**抬头显示**开关。
+- 唤醒智慧语音，说出您的指令，如：“关闭抬头显示”。
+
+### 调节 HUD 高度和亮度
+
+调整主驾座椅坐姿后，您可以通过调节抬头显示的高度和亮度，改善抬头显示的清晰度。
+
+**人工调节**
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式设置抬头显示：
+
+- 唤醒智慧语音，说出您的指令，如：“HUD 高一点”“抬头显示调亮”。
+- 从中控屏顶部下滑出**控制中心**，点击**抬头显示**设置卡片进入设置界面，调节抬头显示的高度和亮度。
+- 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面，调节抬头显示的高度和亮度。
+
+**自动调节 HUD 高度**
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+- 唤醒智慧语音，说出您的指令，如：“自动调节 HUD 高度”，并目视前方，HUD 高度将自动调节至合适位置。
+- 车辆在 P 挡时，调节座椅位置后，目视前方，首次踩下刹车踏板，HUD 高度将自动调节至合适位置。
+
+**自动调节 HUD 亮度**
+
+HUD 亮度始终由系统自动调节，根据您的亮度偏好（默认为 5 挡）和环境明暗变化自动调整。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段标题、说明和操作步骤完整，指代明确，无表头、定义或单位缺失；外部链接仅为扩展参考，不影响核心理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 585 · qwen3.5-4b · 0023_SF-04001002_f8500_抬头显示 · chunk 1 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段为完整的抬头显示主题页，含功能介绍、提示、开关方法及高度亮度调节说明，对象和步骤自明，内部结构完整连贯，无可见断裂或依赖。</p><div class="source">results_v2/judge_final_all.jsonl · line 589 · qwen3.5-4b · 0023_SF-04001002_f8500_抬头显示 · chunk 1 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="8f8e0b06d065e7bb61cc" data-chars="1951" data-sha256="010b4d0e78048a97a0a13603714cae6adbc6e263e67ff9f5a7b17cc1d3b5d625"><header><h4>Chunk 2</h4><span>1951 字符</span></header><div class="meta"><code>SHA256 010b4d0e78048a97a0a13603714cae6adbc6e263e67ff9f5a7b17cc1d3b5d625</code></div><pre class="chunk-text">
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过左右滑动亮度进度条来设置亮度偏好，0 挡最暗，10 挡最亮。系统会记录您的偏好，并在自动调节亮度时参考这些设置。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- HUD 高度自动调节开关默认开启，如果不需要自动调节，可在中控屏进入**设置 ＞ 显示 ＞ 抬头显示**，关闭高度的**自动**开关。
+- HUD 高度自动调节具备学习机制，若自动调节后不符合用户的驾驶习惯，可在中控屏进入**设置 ＞ 显示 ＞ 抬头显示**，手动微调高度，HUD 高度自动调节再次触发时，会学习用户习惯并调节到合适位置。
+- 亮度进度条并不表示 HUD 的实际显示亮度，不随环境明暗而变化，而是用于手动调整自动亮度的偏移量。
+- 佩戴具有偏光的太阳镜会影响抬头显示的清晰度，请调节抬头显示亮度或取下太阳镜。
+
+### 调节显示模式
+
+您可将抬头显示调节成简洁模式或经典模式，在前风挡玻璃上看到车辆当前的车速、电子眼距离等信息。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动至**显示模式**，可选择使用**经典模式**或**简洁模式**。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+**显示模式**默认为**经典模式**。
+
+### AR 增强显示
+
+开启后可以增强显示效果，帮助您更直观的进行辅助驾驶，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启 AR 增强显示：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启 AR 增强显示”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域向上滑动，开启**AR 增强显示**开关，可在抬头显示的基础上叠加增强 AR 效果。
+
+### 雪地增强显示
+
+在雪天开启该功能，可以增强抬头显示的清晰度，该功能默认关闭。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启雪地增强显示：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启抬头显示雪地增强显示”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**雪地增强显示**开关，可在雨雪天气增强抬头显示的效果。
+
+### 转向灯激活影像
+
+开启该功能后，转向时前风挡玻璃会显示转向侧的盲区影像画面，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启转向灯激活影像：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启抬头显示转向灯激活影像”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**转向灯激活影像**开关，可以在转向时看到相应侧的盲区影像画面并伴有红色光晕提醒 。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段围绕抬头显示设置，亮度调节、显示模式、AR增强、雪地增强、转向灯激活影像等方法与提示完整，对象和条件明确，内部结构连贯，无可见缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 586 · qwen3.5-4b · 0023_SF-04001002_f8500_抬头显示 · chunk 2 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 2/3 · 内部完整 2/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;missing_heading_scope&quot;,&quot;evidence&quot;:&quot;您可以通过左右滑动亮度进度条来设置亮度偏好&quot;}]</code></div><p>开头小节缺少所属章节标题，主题需靠正文推断；其余各功能小节（显示模式、AR、雪地、转向灯影像）结构完整、方法与提示齐备，整体可理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 590 · qwen3.5-4b · 0023_SF-04001002_f8500_抬头显示 · chunk 2 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="c2ad495512442ced9cab" data-chars="1988" data-sha256="86d2809f7dddc997eddc7ffe389e088ad9100dab038713bd5bc7ec5929c7973d"><header><h4>Chunk 3</h4><span>1988 字符</span></header><div class="meta"><code>SHA256 86d2809f7dddc997eddc7ffe389e088ad9100dab038713bd5bc7ec5929c7973d</code></div><pre class="chunk-text">
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+在**离线模式**下，**转向灯激活影像**将不可用。
+
+### 倒车影像显示
+
+开启该功能后，倒车时前风挡玻璃会显示车辆后方影像画面，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启倒车影像显示：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启抬头显示倒车影像显示”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**倒车影像显示**开关，倒车时前风挡玻璃会显示车辆后方影像画面。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+在**离线模式**下，**倒车影像显示**将不可用。
+
+### 小地图显示
+
+开启该功能后，前风挡玻璃会显示地图路线，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+您可以通过以下方式开启小地图显示：
+
+**语音开启**
+
+唤醒智慧语音，说出您的指令，如：“开启抬头显示小地图显示”。
+
+**手动开启**
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**小地图显示**开关，可以看到前风挡玻璃会显示地图路线。
+
+### 辅助驾驶意图文字
+
+开启该功能，当车辆处于辅助驾驶模式时，前挡风玻璃将显示辅助驾驶意图文字，让出行更安全，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，开启**辅助驾驶意图文字**开关，当车辆处于辅助驾驶模式时，前挡风玻璃将显示辅助驾驶意图文字。
+
+### AR-HUD 风险预警
+
+开启该功能，在黑夜、暴雨、中大雾等能见度低的环境中，前风挡玻璃会出现预警标识，协助您提前发现风险，该功能默认开启。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+在中控屏进入**设置 ＞ 系统 ＞ HIMA 实验室**，开启或关闭**AR 风险预警**开关。
+
+### AR-HUD 车道指引
+
+开启该功能后，导航时前风挡玻璃会显示车道指引线，实时指示行车方向，该功能默认关闭。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 系统 ＞ HIMA 实验室**，开启**AR 车道指引**开关。
+2. 当车辆处于手动驾驶模式时，**AR 车道指引**会根据导航路线，在对应路况下显示引导光毯或箭头。
+
+### 箭头自定义
+
+您可以根据喜好选择不同的 AR 箭头效果。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，点击**AR 增强显示**开关，进入**箭头自定义**页面，选择您喜欢的箭头样式，系统将自动保存该箭头效果，并随账号记忆。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 2/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;missing_definition&quot;,&quot;evidence&quot;:&quot;转向灯激活影像&quot;}]</code></div><p>主体各功能标题与操作步骤自足，内部衔接完整；仅开头提示中的“转向灯激活影像”未在片段内定义，孤立阅读略有信息缺口。</p><div class="source">results_v2/judge_final_all.jsonl · line 587 · qwen3.5-4b · 0023_SF-04001002_f8500_抬头显示 · chunk 3 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 2/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;cross_chunk_dependency&quot;,&quot;evidence&quot;:&quot;在**离线模式**下，**转向灯激活影像**将不可用。&quot;}]</code></div><p>片段由多个抬头显示功能小节构成，各节含说明与操作方法，内容自洽可独立理解；仅开头遗留上一功能“转向灯激活影像”的提示，属轻微结构残缺，不影响含义。</p><div class="source">results_v2/judge_final_all.jsonl · line 591 · qwen3.5-4b · 0023_SF-04001002_f8500_抬头显示 · chunk 3 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="5af472a4aed6c14b126f" data-chars="786" data-sha256="7cb338eb2a8e5f603daea4b8d448db4993d2d071f5e38e8f6d364d965959e415"><header><h4>Chunk 4</h4><span>786 字符</span></header><div class="meta"><code>SHA256 7cb338eb2a8e5f603daea4b8d448db4993d2d071f5e38e8f6d364d965959e415</code></div><pre class="chunk-text">
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+使用或切换**箭头自定义**功能，车辆需处在 P 挡状态下，并打开**抬头显示**开关及**AR 增强显示**开关。
+
+### 红绿灯倒计时
+
+在行车过程中使用导航时，如果遇到红绿灯，您可在前风挡玻璃上看到红绿灯的倒计时提示信息，该功能默认关闭。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png&gt;)方法
+
+1. 在中控屏进入**设置 ＞ 显示 ＞ 高级显示设置**，点击**抬头显示**进入设置界面。
+2. 在**抬头显示**卡片左侧区域滑动，点击开启**红绿灯倒计时**。
+3. 您可点击**红绿灯倒计时**卡片，选择喜欢的红绿灯倒计时动效效果，系统将自动保存该动效效果。
+
+### 清洁和使用注意
+
+请使用清洁干燥的微纤维布轻轻擦拭抬头显示投影仪区域，如有不易擦净的污渍，可将微纤维布略微浸湿再擦拭。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202604240nYdZU/caution.png&gt;)注意
+
+- 请勿在抬头显示投影仪附近放置任何盛有液体的容器，如果液体进入投影仪区域，可能会导致电气故障。
+- 请勿在抬头显示投影仪或挡风玻璃投影区域上放置任何物品和贴纸，否则可能会中断抬头显示指示。
+- 请勿触摸抬头显示投影仪内部或向投影仪内部投掷边缘尖锐的物体，否则可能会导致机械故障。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段包含提示、红绿灯倒计时设置方法及清洁注意，结构完整，条件与指代明确，可独立理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 588 · qwen3.5-4b · 0023_SF-04001002_f8500_抬头显示 · chunk 4 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 2/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;cross_chunk_dependency&quot;,&quot;evidence&quot;:&quot;使用或切换**箭头自定义**功能&quot;}]</code></div><p>片段含红绿灯倒计时说明与操作步骤、清洁使用注意事项，结构完整、语义自洽；但开头提示针对的箭头自定义功能说明不在片段内，属轻微外部依赖，不影响核心条件理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 592 · qwen3.5-4b · 0023_SF-04001002_f8500_抬头显示 · chunk 4 · glm-5.3-flash</div></div></div></article></article></div><div class="error-group"><h3>6 · 表格结构损坏</h3><article class="article-case semantic error-case" data-error-category="table_structure_damage"><div class="article-head"><div><span class="pill">6 · 表格结构损坏 · 原始用户手册 · qwen3.5-4b</span><h3>0364_SF-03006002_f8113_座椅参数</h3></div><strong>1 chunks</strong></div><p class="review"><b>全文复核：</b>全文只有 1 块，已完整展示。两位判官均记录 missing_table_header：多级表头被展平后出现空列、子表头与数据列数不一致，数值归属无法可靠判断。源 Markdown 的合并单元格展平表示在冻结数据集中已经损坏；模型未切开文章，因此这不是模型切分新造成的错误，而是切分结果继承了源表示缺陷。</p><p class="source">结果来源：results_final/final_A_qwen3.5-4b.jsonl · line 12 · qwen3.5-4b · 0364_SF-03006002_f8113_座椅参数<br>源文来源：dataset_v2/shard_A_L2000_s1.jsonl · line 6 · 冻结数据集 · 0364_SF-03006002_f8113_座椅参数 · source SHA256 43c0d726d81c33393e59a3918d289beda0d8a98f8a71940a7d2d6cf1dfb96a75</p><article class="chunk-card" data-case-id="61021271de73407b6f82" data-chars="1979" data-sha256="43c0d726d81c33393e59a3918d289beda0d8a98f8a71940a7d2d6cf1dfb96a75"><header><h4>Chunk 1</h4><span>1979 字符</span></header><div class="meta"><code>SHA256 43c0d726d81c33393e59a3918d289beda0d8a98f8a71940a7d2d6cf1dfb96a75</code></div><pre class="chunk-text">---
+title: &quot;座椅参数&quot;
+directory_path: &quot;车辆规格 / 整车参数 / 座椅参数&quot;
+source_url: &quot;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-03006002_f8113.html?tipsOs=harmonyos4.3&amp;tipsProductRegion=f2n-evr&amp;tipsLang=zh-cn&amp;tipsFunNum=SF-03006002_f8113&amp;systemType=hwtips&amp;docId=0400505413117633&amp;v=101775565874&quot;
+manifest_index: 363
+navi_num: &quot;SF-03006002_f8113&quot;
+---
+
+# 目录路径：车辆规格 / 整车参数 / 座椅参数
+
+## 座椅参数
+
+### 五座版（SKE6530DREEVA1F、SKE6530DREEVA2F）
+
+| 项目 | 驾驶员侧座椅 | 副驾驶侧座椅 | 第二排座椅 | | |
+| --- | --- | --- | --- | --- | --- |
+|  |
+| 普通座椅 | 零重力座椅套装 | |
+| 左侧独立座椅 | 右侧零重力座椅 |
+| 设定的座椅前后位置（mm）1 | 向前调节 200，向后调节 80 | 向前调节 175，向后调节 75 | / | 向前调节 180，向后调节 0 | |
+| 设定的靠背角状态（°）1 | 25 | | 28 | | |
+| 座椅靠背调节角度（°）2 | 向前调节 23，向后调节 65 | | 向前调节1.5，向后调节15.5 | 向前调节 28，向后调节 32 | 向前调节 28，向后调节 22 |
+
+1：测量座垫深时。
+
+2：从设定角度。
+
+### 六座版（SKE6530DREEVA1F、SKE6530DREEVA2F）
+
+| 项目 | 驾驶员侧座椅 | 副驾驶侧座椅 | 第二排座椅 | | 第三排座椅 |
+| --- | --- | --- | --- | --- | --- |
+|  |
+| 普通座椅 | 零重力座椅 |
+| 设定的座椅前后位置（mm）1 | 向前调节 200，向后调节 80 | 向前调节 175，向后调节 75 | 向前调节 95，向后调节 140 | 向前调节 95，向后调节 150 | 向前调节 125，向后调节 30 |
+| 设定的靠背角状态（°）1 | 25 | | 25 | | |
+| 座椅靠背调节角度（°）2 | 向前调节 23，向后调节 65 | | 向前调节 25，向后调节 35 | | 向前调节 0，向后调节 8 |
+
+1：测量座垫深时。
+
+2：从设定角度。
+
+### 五座版（SKE6540DREEVA3F、SKE6540DREEVA2F）
+
+| 项目 | 驾驶员侧座椅 | 副驾驶侧座椅 | 第二排座椅 |
+| --- | --- | --- | --- |
+|  |
+| 设定的座椅前后位置（mm）1 | 向前调节 250，向后调节 50 | 向前调节 175，向后调节 75 | 向前调节 180，向后调节 0 |
+| 设定的靠背角状态（°）1 | 25 | | 28 |
+| 座椅靠背调节角度（°）2 | 向前调节 28，向后调节 65 | 向前调节 98，向后调节 65 | 向前调节 28，向后调节 22 |
+
+1：测量座垫深时。
+
+2：从设定角度。
+
+### 六座版（SKE6540DREEVA3F、SKE6540DREEVA2F）
+
+| 项目 | 驾驶员侧座椅 | 副驾驶侧座椅 | 第二排座椅 | | | | 第三排座椅 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 零重力座椅 | | 旋转零重力座椅 | |
+| 左侧座椅 | 右侧座椅 | 左侧座椅 | 右侧座椅 |
+| 设定的座椅前后位置（mm）1 | 向前调节 250，向后调节 50 | 向前调节 175，向后调节 75 | 向前调节 65，向后调节 215 | | 向前调节 330，向后调节 215 | | 向前调节 125，向后调节 30 |
+| 设定的靠背角状态（°）1 | 25 | | | | | | |
+| 座椅靠背调节角度（°）2 | 向前调节 28，向后调节 65 | 向前调节 98，向后调节 65 | 向前调节 25，向后调节 35 | | 向前调节 40，向后调节 35 | | 向前调节 0，向后调节 8 |
+
+1：测量座垫深时。
+
+2：从设定角度。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 1/3 · 内部完整 1/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;missing_table_header&quot;,&quot;evidence&quot;:&quot;| 项目 | 驾驶员侧座椅 | 副驾驶侧座椅 | 第二排座椅 | | |&quot;}]</code></div><p>表格多级表头缺失、列对应混乱，部分数据无法确定所属座椅；片段内部结构断裂，但核心主题可辨。</p><div class="source">results_v2/judge_final_all.jsonl · line 566 · qwen3.5-4b · 0364_SF-03006002_f8113_座椅参数 · chunk 1 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 2/3 · 内部完整 2/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;missing_table_header&quot;,&quot;evidence&quot;:&quot;普通座椅 | 零重力座椅套装 | |&quot;},{&quot;type&quot;:&quot;missing_table_header&quot;,&quot;evidence&quot;:&quot;零重力座椅 | | 旋转零重力座椅 | |&quot;}]</code></div><p>标题、单位、脚注齐全，主题与各车型版本可独立理解；但表格合并单元格被压平，子表头行与数据列数不一致，部分数值归属哪个座椅无法可靠确定，属局部结构残缺。</p><div class="source">results_v2/judge_final_all.jsonl · line 570 · qwen3.5-4b · 0364_SF-03006002_f8113_座椅参数 · chunk 1 · glm-5.3-flash</div></div></div></article></article></div><div class="error-group"><h3>7 · 合法但无用的小块</h3><article class="article-case semantic error-case" data-error-category="legal_but_useless"><div class="article-head"><div><span class="pill">7 · 合法但无用的小块 · 原始用户手册 · qwen3.6-35b-a3b</span><h3>0149_SF-06002000_f8400_行车记录仪</h3></div><strong>11 chunks</strong></div><p class="review"><b>全文复核：</b>全文 11 块均已展示。Chunk 4 仅 65 字符，由“拍照”标题和一句功能说明组成；它合法、可解析、双判官均为双 3 且 missing 为空，但相对全文形成信息量极低的微块。其余 Chunk 1–3、5–10 均有更充分内容且双判官严格通过；Chunk 11 仅因引用本文另一块的“存储”章节被两位判官记为跨块依赖。这里的“无用”指检索载荷过低，并非该句完全没有事实信息。</p><p class="source">结果来源：results_final/final_A_qwen3.6-35b-a3b.jsonl · line 6 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪<br>源文来源：dataset_v2/shard_A_L2000_s1.jsonl · line 5 · 冻结数据集 · 0149_SF-06002000_f8400_行车记录仪 · source SHA256 d0323537b8781ac58eb8f43a7bfe2643970f030a067c96d08309794c0d0cf2cd</p><article class="chunk-card" data-case-id="fea0418bbef7fe465f75" data-chars="1473" data-sha256="b41e1db6d57596db49a5e579a1a9e84b3a0411b99069c1549ac5f8435b279195"><header><h4>Chunk 1</h4><span>1473 字符</span></header><div class="meta"><code>SHA256 b41e1db6d57596db49a5e579a1a9e84b3a0411b99069c1549ac5f8435b279195</code></div><pre class="chunk-text">---
+title: &quot;行车记录仪&quot;
+directory_path: &quot;驾驶车辆 / 行车记录仪&quot;
+source_url: &quot;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-06002000_f8400.html?tipsOs=harmonyos4.3&amp;tipsProductRegion=f2n-evr&amp;tipsLang=zh-cn&amp;tipsFunNum=SF-06002000_f8400&amp;systemType=hwtips&amp;docId=0400502369071200&amp;v=201775270875&quot;
+manifest_index: 148
+navi_num: &quot;SF-06002000_f8400&quot;
+---
+
+# 目录路径：驾驶车辆 / 行车记录仪
+
+## 行车记录仪
+
+行车记录仪用以记录车辆行驶过程中车外的视频、声音和图片，其不仅可以记录突发交通事件视频，作为后续处理事故的凭证；还可以记录行车过程中的风景，作为生活记录与娱乐功能介绍。
+
+您可以在中控屏，点击状态栏![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202601151h3tZq/p0000308846.png&gt;) 图标，或点击中控屏底部工具栏的![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202608081Z1qu5/P0000331559.png&gt;) ＞ 应用中心 ＞ 行车记录仪，打开行车记录仪应用。当行车记录仪关闭后，当前账户下行车记录仪将不再随车辆启动默认开启，但抓拍录像功能仍可使用。
+
+- 录制功能开启后，中控屏顶部状态栏显示![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202601151h3tZq/p0000308846.png&gt;)图标。
+- 录音录像功能开启后，中控屏顶部状态栏显示![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202601221oWMlj/p0000308882.png&gt;)图标。
+- 功能关闭后，中控屏顶部状态栏显示![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202607281UgZ5c/p0000308884.png&gt;)图标。
+- 功能故障时，中控屏顶部状态栏显示![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202610250ciUjo/p0000308883.png&gt;)图标。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 停车下电后，行车记录仪将不再工作。
+- 首次登录车机账号时，在开机引导界面同意行车记录仪隐私说明，进入系统后，行车记录仪会自动打开。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段自包含，标题与正文完整，操作步骤、状态说明和提示条件清晰；图片外链虽不可见但文字已说明对应图标，不影响核心理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 183 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 1 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段含完整标题、元信息和正文，主题为行车记录仪，功能说明、操作路径、状态图标含义及提示均自足可懂，内部结构完整无断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 206 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 1 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="a92cc9136213d368ae51" data-chars="592" data-sha256="d217a3f7133e8b6f97f25590f328e41a6c29dc3f113a94e9157b8565e6ba76fb"><header><h4>Chunk 2</h4><span>592 字符</span></header><div class="meta"><code>SHA256 d217a3f7133e8b6f97f25590f328e41a6c29dc3f113a94e9157b8565e6ba76fb</code></div><pre class="chunk-text">
+### 抓拍录像
+
+抓拍录像也被称为紧急录像，触发方式分为自动触发、手动触发。
+
+- 自动触发：当检测到发生碰撞、紧急制动等情况时，行车记录仪自动记录触发时间点前后近 1 分钟的视频，并显示在抓拍录像文件夹中。行车记录仪在未插入外置存储设备时，也可触发抓拍录像视频，此视频会存储在车机存储中，并且最多占用 6 GB 的车机存储空间。当 6 GB 空间录满之后，时间最早的抓拍录像视频会被最新视频覆盖。
+- 手动触发：可通过行车记录仪应用内手动点击触发、语音触发、方控触发抓拍录像（如果方控功能可用）。抓拍录像功能触发后，系统自动记录触发时间点前后近 2 分钟的视频，并显示在抓拍录像文件夹中，抓拍录像时不会暂停循环录制，且循环录制会保存与抓拍录像同时间的视频。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 抓拍录像开启之后，如果行车记录仪未打开，则会默认打开行车记录仪开关。
+- 如果外置存储可用，行车记录仪会将车机存储空间中的抓拍录像视频移动到外置存储中。
+- 手动触发抓拍录像功能只能在外置存储可用情况下使用。U 盘中抓拍录像的视频不会被自动覆盖，外置存储空间存满后需要手动删除，否则将影响视频的录制功能。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段标题完整，内容围绕抓拍录像的定义、触发方式、存储与覆盖规则展开，条理清晰，无可见缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 184 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 2 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段以标题开头，完整介绍抓拍录像的定义、自动与手动触发方式、存储规则及提示，对象、条件和结论均明确，内部结构完整无断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 207 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 2 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="1c3c2de4244ab049439b" data-chars="235" data-sha256="9f331e201b5f13f4fa09d5d4b365c0acd1fee4fa26eabb1f74452c914840d954"><header><h4>Chunk 3</h4><span>235 字符</span></header><div class="meta"><code>SHA256 9f331e201b5f13f4fa09d5d4b365c0acd1fee4fa26eabb1f74452c914840d954</code></div><pre class="chunk-text">
+### 循环录像
+
+当行车记录仪开启后，行车记录将会持续录制循环视频，直到退出。
+
+循环录像存储于循环录像文件夹中，当文件夹录满后，时间最早的视频将会被最新视频覆盖，但是锁定的视频不会被覆盖。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+循环视频覆盖时，不区分用户，可以将其他用户下的循环视频覆盖掉。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段围绕循环录像给出定义、覆盖规则和用户提示，独立可读，结构完整，无缺失依赖。</p><div class="source">results_v2/judge_final_all.jsonl · line 185 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 3 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段以标题开头，完整说明循环录像的录制、存储、覆盖规则及提示，对象和条件明确，无片段外依赖，内部结构连贯。</p><div class="source">results_v2/judge_final_all.jsonl · line 208 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 3 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="3bb92cce5e16eab12a7d" data-chars="65" data-sha256="1008fa3b4a198c7dacc785a7d7a284eec192b6e3a5660f8a576bc2cc8386fa65"><header><h4>Chunk 4</h4><span>65 字符</span></header><div class="meta"><code>SHA256 1008fa3b4a198c7dacc785a7d7a284eec192b6e3a5660f8a576bc2cc8386fa65</code></div><pre class="chunk-text">
+### 拍照
+
+抓拍车外图片或者视频回放的画面截图，显示在图片文件夹中。图片查看时，支持双击放大、缩小；双指放大、缩小等操作。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段以标题加正文完整说明拍照功能及图片查看操作，对象、步骤和条件明确，无片段外依赖或内部断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 186 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 4 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>标题&quot;拍照&quot;与正文内容对应，说明了抓拍车外图片、视频回放截图及图片查看操作，对象和结论清晰，片段内部结构完整，无可见断裂或指代缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 209 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 4 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="ff6e5b49ae4efe6f3dff" data-chars="648" data-sha256="10f4709577ea6fca92b28abe01dc0b32926de3f0e5479c78bb622c0011ae1c07"><header><h4>Chunk 5</h4><span>648 字符</span></header><div class="meta"><code>SHA256 10f4709577ea6fca92b28abe01dc0b32926de3f0e5479c78bb622c0011ae1c07</code></div><pre class="chunk-text">
+### 查看与设置行车记录仪
+
+- 数据回看：在首页可查看行车记录仪录制的抓拍视频、循环视频、图片和哨兵录像。
+
+  - 查看行车记录仪视频时，支持局部画面双指放大查看。
+  - 在播放循环录像和抓拍录像时，点击暂停按钮后，可通过点击逐帧播放按钮对视频进行逐帧慢放。
+  - 在播放循环录像当前行程视频时，当前视频播放完成后，将按时间顺序自动播放下一组视频。
+- 实时画面：点击**实时画面**按钮，切换至行车记录仪实时监控画面。
+- 编辑：切换至编辑模式，对已存储视频和图片进行删除、导出到手机。针对循环录像，还可以锁定视频，锁定后该视频不能被覆盖。
+- 设置：设置行车记录仪功能。
+
+  - 行车记录仪：可开启、关闭车辆每次启动后自动开始循环录像的录制。
+  - 录像时录音：可开启、关闭行车记录仪的录像时录音的功能。
+  - 恢复默认设置并清除数据：删除所有用户下的行车记录仪数据，行车记录仪设置项恢复到默认出厂状态，并格式化外置存储设备。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 恢复默认设置并清除数据之后，所有用户的行车记录仪设置项都会被删除，需要手动打开行车记录仪录制功能。
+- 由于摄像头参数、代码执行效率、硬件响应存在微小差异，可能导致循环录像的视频小于或者大于 1 分钟，不影响视频的连续性与完整性。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段标题明确，内容完整列出查看与设置功能及操作提示，内部结构连贯，无片段外依赖或可见断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 187 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 5 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>标题点明主题，正文按数据回看、实时画面、编辑、设置分类说明，末尾提示与前文设置项呼应，内容自足、结构完整，无可见依赖或断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 210 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 5 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="23f35e38a3d3f295b1f2" data-chars="343" data-sha256="35760db42fdaef32ec7fd7ab666c48cadaa7bd43aaf69722a1b0f177e9563c5d"><header><h4>Chunk 6</h4><span>343 字符</span></header><div class="meta"><code>SHA256 35760db42fdaef32ec7fd7ab666c48cadaa7bd43aaf69722a1b0f177e9563c5d</code></div><pre class="chunk-text">
+### 数据导出
+
+- 在行车记录仪编辑模式下，选择视频或照片使用直接导出并发送至手机。
+- 在视频列表界面，长按视频封面，可将该组视频导出并发送至手机。
+- 在行车记录仪视频播放页面，点击分享按钮，可将该组视频导出并发送至手机。
+- 在行车记录仪视频播放页面，使用录屏分享功能导出至手机，可录制想要视频片段，导出到手机中，该模式下导出的视频带有水印数据。
+- 拔出 Type-C 接口中的 U 盘，将其插入电脑即可进行数据导出。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+数据分享至手机功能，仅支持华为手机使用。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段以数据导出为标题，列出多种导出方式并说明华为手机限制，对象、步骤和条件明确，内部结构完整，无可见缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 188 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 6 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段有明确标题“数据导出”，五条操作步骤完整自足，末尾提示限定了适用条件，内部结构连贯，无可见断裂或片段外依赖。</p><div class="source">results_v2/judge_final_all.jsonl · line 211 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 6 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="78903b0c06e59365f8d7" data-chars="357" data-sha256="3d2dd52f6e1472e61e684f3a6e39ebfea4e4fd2f58bc5412060b9a6226911fa0"><header><h4>Chunk 7</h4><span>357 字符</span></header><div class="meta"><code>SHA256 3d2dd52f6e1472e61e684f3a6e39ebfea4e4fd2f58bc5412060b9a6226911fa0</code></div><pre class="chunk-text">
+### 车内录音
+
+行车记录仪支持录音功能，该功能默认为关闭状态，需手动开启。
+
+您可以在行车录制的设置界面中，点击**录像时录音**，开启或关闭该功能。
+
+当录音功能打开后，中控屏顶部状态栏显示![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202601221oWMlj/p0000308882.png&gt;)图标，录制视频的同时进行录音。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+视频录音功能打开之后，会在下一组视频生效，当前录制的视频不会带有录音。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段主题明确，围绕车内录音功能说明默认状态、开启方式、状态显示和生效时机，内部衔接连贯，无可见缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 189 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 7 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段含标题与完整正文，功能默认状态、开启路径、状态栏提示及生效例外均自足可解，内部衔接自然，无指代悬空或结构断裂。</p><div class="source">results_v2/judge_final_all.jsonl · line 212 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 7 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="d80b26506bc71680f1d4" data-chars="239" data-sha256="5f9d1c80bdd1d54999d3e7437dba18aabe3ada60f39dd039eccc9e1bec557a19"><header><h4>Chunk 8</h4><span>239 字符</span></header><div class="meta"><code>SHA256 5f9d1c80bdd1d54999d3e7437dba18aabe3ada60f39dd039eccc9e1bec557a19</code></div><pre class="chunk-text">
+### 行车数据水印
+
+行车记录仪支持水印功能，功能默认打开，部分行车信息将以水印的形式叠加在视频中显示。
+
+常见的水印信息包含：车辆速度、挡位信息、电门状态、刹车状态、主驾安全带信息、以及辅助驾驶状态的各种信息。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+行车记录仪视频水印普遍存在一定的延时，仅供参考。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段自含标题与说明，功能、默认状态、水印信息及延时提示均明确，内部结构连贯，无可见缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 190 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 8 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段主题明确，完整说明水印功能、默认状态、包含的水印信息及延时提示，无悬空指代或缺失依赖，内部结构连贯。</p><div class="source">results_v2/judge_final_all.jsonl · line 213 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 8 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="3bd1b2dccaa5cf0ec023" data-chars="108" data-sha256="a9ef99dae9bc4794027084865dd7ee435dfc330c69da5bbe97dbdf86a29f7617"><header><h4>Chunk 9</h4><span>108 字符</span></header><div class="meta"><code>SHA256 a9ef99dae9bc4794027084865dd7ee435dfc330c69da5bbe97dbdf86a29f7617</code></div><pre class="chunk-text">
+### 数据权限
+
+- 登录时产生的数据，仅可查看当前用户下录制的视频和抓拍的图片。
+- 未登录时产生的数据，只有车主以及未登录账号情况下可查看。
+- 不同用户，需分别进行车辆的权限授权操作和行车记录仪功能设置。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段以“数据权限”为标题，三条规则对象与条件明确，无需片段外上下文，内部列表结构连贯。</p><div class="source">results_v2/judge_final_all.jsonl · line 191 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 9 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>标题与三条列表完整说明登录/未登录状态下视频图片的查看权限及分用户授权要求，对象、条件清晰，无可见断裂或缺失。</p><div class="source">results_v2/judge_final_all.jsonl · line 214 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 9 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="f5dd2d90cfade41ed51c" data-chars="570" data-sha256="a566d8eb9781aa2deea7173a6dc8da3a01898de2af9db98361eebe0cbe893b12"><header><h4>Chunk 10</h4><span>570 字符</span></header><div class="meta"><code>SHA256 a566d8eb9781aa2deea7173a6dc8da3a01898de2af9db98361eebe0cbe893b12</code></div><pre class="chunk-text">
+### 存储
+
+- 外置存储位置：打开隐私储物箱，在 Type-C 接口插入 U 盘。
+
+  ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202611231Yglbj/p0000350142.png&gt;)
+- U 盘容量：可在行车记录仪页面查看当前用户的循环视频容量、抓拍录像容量、图片容量、U 盘总容量等，及不同数据类型的容量占比。
+
+###### ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png&gt;)提示
+
+- 带哨兵模式的车型，行车记录仪和哨兵功能各自使用外置存储一半的容量。
+- 循环视频、抓拍录像、图片的容量显示仅显示当前用户下的数据、其他用户下的数据会显示为其他。
+- U 盘要求：使用正版的 U 盘，容量建议使用 128 GB 及以上，只支持 exFAT 格式 U 盘。
+
+  - 最低持续写入速度至少达到 10 MB/s，支持 USB2.0 及以上协议、写入寿命为**高耐久**及行车记录仪专用系列的 U 盘。
+  - 已正确格式化为 exFAT 文件格式，其它格式可能导致视频无法落盘或使用。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段为车载存储小节，含标题、列表与提示，条件、单位、格式说明完整，内部结构连贯，无需片段外信息即可理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 192 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 10 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 3/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[]</code></div><p>片段围绕行车记录仪外置存储展开，位置、容量查看、U盘要求等对象、条件与结论完整自明，无悬空指代或结构断裂，孤立阅读即可正确理解。</p><div class="source">results_v2/judge_final_all.jsonl · line 215 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 10 · glm-5.3-flash</div></div></div></article><article class="chunk-card" data-case-id="35515e8e238bffca269d" data-chars="858" data-sha256="6adaea42efcac3d08109b9e4e756877b28d584b0723db771f02ff7dbf7a27c3e"><header><h4>Chunk 11</h4><span>858 字符</span></header><div class="meta"><code>SHA256 6adaea42efcac3d08109b9e4e756877b28d584b0723db771f02ff7dbf7a27c3e</code></div><pre class="chunk-text">
+### 异常处理
+
+- 出现**U 盘未就绪**提醒：可根据**存储**章节，找到 U 盘所在位置，查看 U 盘是否插入，如果未插入 U 盘，请及时插入 U 盘，如果 U 盘已经插入，请重新拔插 U 盘尝试恢复。
+- 出现**U 盘读写速率低**提醒：可及时更换满足**存储**章节中要求的 U 盘。
+- 出现**U 盘容量已满且无法绕接，请尽快清除数据**提醒：
+
+  - 请删除不需要的抓拍录像、已锁定的循环录像来清除数据。
+  - 使用行车记录仪设置页面的**恢复默认设置并清除数据**功能，格式化 U 盘，此操作需在车主或者授权账户下操作，会将 U 盘中的所有数据删除。
+- 出现**U 盘格式错误**提醒：可将 U 盘插入到电脑中，打开文件资源管理器，选择此电脑，右键单击需要格式化的盘符，选择格式化，将文件系统选择为 exFAT 格式，点击开始。
+
+  ![](&lt;https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/2026092017kiiw/P0000346352.png&gt;)
+
+- 如果在行车记录仪录制期间插拔 U 盘或行车录像过程中，若车辆意外断电（如发生严重碰撞等），正在录制的视频可能无法及时保存，从而导致视频缺失、紧急视频生成失败等情况。
+- 已录制的视频和照片仅存储于 U 盘中，请您务必妥善保管 U 盘，避免 U 盘或者 U 盘内中的数据损坏或者遗失。
+- 其他文件不应存储在行车记录仪文件所在的 U 盘，将其他文件存储在该 U 盘中，可能会造成数据丢失。
+- 使用行车记录仪时，系统会访问摄像头权限、车辆外置存储权限、车辆行驶中的信息数据，以实现视频的录制。请驾驶员在遵守当地法律法规和所在场所关于摄像头使用规定的要求的前提下使用行车记录仪，并承担相应的全部责任。
+- 在使用行车记录仪**循环录像** 、**抓拍录像**、拍照 、和**录像时录音**等功能时，遵守法律法规相关要求，尊重第三方合法权益。
+</pre><div class="judge-grid"><div class="judge"><div class="judge-head"><strong>deepseek-flash</strong><span>独立性 2/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;cross_chunk_dependency&quot;,&quot;evidence&quot;:&quot;可根据**存储**章节&quot;}]</code></div><p>异常处理步骤和条件清晰，但需参考片段外的“存储”章节获取U盘位置与要求；片段内部结构连贯完整。</p><div class="source">results_v2/judge_final_all.jsonl · line 193 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 11 · deepseek-flash</div></div><div class="judge"><div class="judge-head"><strong>glm-5.3-flash</strong><span>独立性 2/3 · 内部完整 3/3</span></div><div><b>missing</b> <code>[{&quot;type&quot;:&quot;cross_chunk_dependency&quot;,&quot;evidence&quot;:&quot;可根据**存储**章节，找到 U 盘所在位置&quot;}]</code></div><p>标题与列表结构完整，各异常提醒及处理步骤表述清晰，内部无断裂；但U盘位置与规格要求需参照片段外的“存储”章节，属轻微片段外依赖。</p><div class="source">results_v2/judge_final_all.jsonl · line 216 · qwen3.6-35b-a3b · 0149_SF-06002000_f8400_行车记录仪 · chunk 11 · glm-5.3-flash</div></div></div></article></article></div></section>
+<section data-section="limits"><h2>07 · 限制</h2><ul><li>仅覆盖 12 篇结构相对规整的用户手册和 4 个模型，不能代表更广泛语料。</li><li>两位判官分别有 141 与 140 条有效判决，自动分数未经人工标注集锚定。</li><li>failed、atom 超限、源表示损坏与语义边界问题是不同层次，不能混为一种失败。atom 超限属于输入预检：备选分割（atom 清单）中只要存在单个超过 L 的 atom，就按不拆分 atom 的规则直接判为不可行，不进入模型调用。</li><li>“合法但无用”依据块长度与检索载荷作说明性判断；判官只证明它合法完整，不直接评价检索价值。</li></ul></section>
+<section data-section="review"><h2>08 · 复核入口</h2><ul><li><code>results_final/final_A_*.jsonl</code>（原始用户手册运行结果）</li><li><code>results_v2/judge_final_all.jsonl</code>（判官原始行，内部按真实键核对）</li><li><code>dataset_v2/*.jsonl</code>（冻结源文、字符数与源哈希）</li><li><code>reports/make_brief_report_v2.py</code></li><li><code>tools/verify_brief_report_v2.py</code></li><li><code>tests/test_brief_report_v2.py</code></li></ul></section>
+<p class="source">静态单文件 · 无外部资源 · 无脚本 · 所有展示块全文展开</p></main></body></html>
