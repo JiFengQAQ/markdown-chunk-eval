@@ -1,0 +1,82 @@
+﻿---
+title: "中控屏简介"
+directory_path: "车辆概览 / 主驾中控屏 / 中控屏简介"
+source_url: "https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001003_f8500.html?tipsOs=harmonyos4.3&tipsProductRegion=f2n-evr&tipsLang=zh-cn&tipsFunNum=SF-04001003_f8500&systemType=hwtips&docId=0400506596356522&v=101775565874"
+manifest_index: 24
+navi_num: "SF-04001003_f8500"
+---
+
+# 目录路径：车辆概览 / 主驾中控屏 / 中控屏简介
+
+## 中控屏简介
+
+您可以通过中控屏便捷设置车辆参数、操作功能和查看信息。中控屏桌面支持多种管理功能，如文件夹、自定义状态栏和工具栏等，操作简单，助您打造个性化界面，满足多样化驾驶需求。
+
+![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202605230okWbb/p0000331827.png>)
+
+| 图标 | 说明 |
+| --- | --- |
+| ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-evr/image/202609040sevnt/P0000307851.png>)状态栏 | 查看账号状态、车辆通知和行车记录等信息，还可自定义状态栏中显示的图标。 |
+| ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202608281mu2tj/p0000086851.png>)堆叠卡片 | 无需打开应用，可快速预览应用信息或使用常用功能，还可将多张卡片进行堆叠。 |
+| ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/image/202606231qx1le/p0000086880.png>)屏幕切换指示条 | 左右滑动查看桌面应用、卡片。屏幕切换指示条显示当前屏幕所在位置。 |
+| ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202607042fdZhg/p0000086384.png>)文件夹 | 分类管理应用图标，减少桌面杂乱，提升查找与操作效率。 |
+| ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202605261killr/p0000086382.png>)工具栏 | 调节空调温度、音量等，还可以在工具栏添加自定义应用按钮，便捷地操控车辆常用功能。 |
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png>)方法
+
+- **自定义状态栏中显示的图标**
+
+  1. 在中控屏进入**设置＞系统 ＞ 通用 ＞ 通知与状态栏**。
+  2. 在**状态栏**页签中，根据需要开启或关闭图标显示开关。
+
+  ##### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png>)提示
+
+  该功能仅适用于编辑中控屏状态栏。
+- **自定义工具栏中显示的快捷按钮**
+
+  长按工具栏（除Home、空调外），将出现工具栏待选区，您可进行以下任一操作：
+
+  - 长按并拖动快捷按钮调整位置。
+  - 在**控制**或**应用**页签中，点击带有![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202610231ootv1/P0000331901.png>)的快捷按钮，该按钮将显示在工具栏；点击带有![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202612120htTgs/p0000308983.png>)的快捷按钮，可将该按钮从工具栏移除，移除的快捷按钮将出现在工具栏待选区。
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202606041hbdYe/warning.png>)警告
+
+驾驶员必须始终把注意道路和交通状况放到第一位。为确保车辆驾乘人员和其他道路使用者的安全，建议驾驶员不要在车辆行驶过程中使用中控屏。
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202604240nYdZU/caution.png>)注意
+
+请勿使用尖锐物体操作中控屏，否则会对屏幕造成不可修复的损伤。
+
+### 常见图标含义
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png>)提示
+
+不同车型支持的功能有差异，请以实际显示为准。
+
+- **状态栏常见图标**
+
+  | 图标 | 名称 | 说明 |
+  | --- | --- | --- |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202604120r3Yhj/P0000349512.png>) | 账号 | 进入个人中心或唤起用户登录。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202607201ZixsW/P0000349513.png>) | 时间 | 显示时间，点击进入屏幕保护界面。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202606061kWZjp/p0000308939.png>) | 通知 | 进入通知中心，可查看应用消息等。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202612120eVhhi/P0000349514.png>) | 无线充电 | 无线充电开关，可查看设备当前的充电状态。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/ichuf02/image/202611151Zdfzl/p0000308785.png>) | 多屏管理 | 进入多屏管理功能界面，可在前排屏协助管理车内其他屏幕，还可在不同设备屏幕间无缝切换。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202601151h3tZq/p0000308846.png>) | 行车记录仪 | 查看行车记录仪状态。  - 行车记录仪开关。 - 录像时录音开关。 - 点击**前往行车记录仪**，进入行车记录仪功能界面，查看行车记录。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202612092Spfhv/P0000352164.png>) | 蓝牙 | 查看蓝牙开启或关闭状态。 - 显示已配对的设备。 - 点击**更多蓝牙设置**，可开启或关闭蓝牙开关，查看已连接设备、可用设备等。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202605281hvyvy/p0000308932.png>) | 信号 | 当车辆连接网络（WLAN![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202605281hvyvy/p0000308932.png>)、移动数据![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202604120wvmVZ/p0000308947.png>)或卫星通信![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/2026090613nzBY/P0000357960.png>)）时，您可查看车辆的移动网络信号状态。若车辆同时连接多个网络，显示优先级为：卫星通信 ＞ WLAN ＞ 移动数据。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202604182debcq/P0000349515.png>) | 天气 | 显示当日的天气与温度。 |
+- **工具栏常见图标**
+
+  | 图标 | 名称 | 说明 |
+  | --- | --- | --- |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202610021nk1qq/P0000349566.png>) | 座椅 | 进入主驾或副驾座椅调节界面，开启或调节座椅加热、通风与按摩功能。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/2026053121ni4j/P0000338356.png>) | 空调 | 长按![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/2026053121ni4j/P0000338356.png>)一键开启或关闭空调，点击可展开或收起空调界面（具体请参考**使用空调**）。  点击温度显示区域，快捷调节主驾或副驾侧温度。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202604270Zzmfv/P0000349579.png>) | 设置 | 进入**设置**界面。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202608081Z1qu5/P0000331559.png>) | 应用中心 | 进入应用中心界面，可查看、使用已安装的应用。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202606270zgjpr/P0000349551.png>) | 地图 | 进入地图界面，进行车辆定位与导航。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202601311Zfzqx/P0000349552.png>) | 播控中心 | 可统一管理多个音频应用（如音乐、有声、故事类等），快速控制和切换不同应用，选择您喜欢的音频内容播放。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202606112kprRR/P0000349553.png>) | Home 键 | 返回中控屏主桌面，长按可进入多任务管理。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202602181hpp5u/p0000308818.png>) | 内外循环 | 显示当前空调内循环![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202602181hpp5u/p0000308818.png>)、自动内循环![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202608250zhZNe/p0000308816.png>)、自动外循环![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202611080Yh2jr/p0000308817.png>)、外循环![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202601132Wbugn/p0000308819.png>)模式。在**自动循环**模式下，系统会根据环境自动控制内外循环，当系统检测到车外空气质量差、进入隧道等场景时，会自动切换内循环保证车内空气质量。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202602061n8Re5/P0000337347.png>) | 前除雾 | 开启或关闭前风挡以及前排侧边玻璃的除霜、除雾功能。 |
+  | ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202607072wZkgV/P0000349554.png>) | 音量 | 点击后可调节当前系统正在播放的音频音量大小；也可点击![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202607260rmgnh/p0000308934.png>)，分别调节媒体、智慧语音、导航、通话的音量大小。 |

@@ -1,8 +1,8 @@
 # Markdown 语义切分预研报告（简版）
 
-12 篇真实中文用户手册文档在 L=2000 字符约束下的语义切分评测。
+- `index.html`：简版主报告，包含侧边栏目录、必要数据和文章级案例；不再内嵌原始数据。
+- `appendix/`：独立原始数据附录目录。8 个案例分别保存原始文章、system/user 输入、模型正文、清理后的响应 JSON 和元数据。
 
-- `index.html`：简版报告，包含固定侧边栏目录、必要数据、文章级成功/错误案例，以及 8 个案例的原始数据附录。
-- 原始数据附录包含原始文章、提供给分块模型的 system/user，以及模型响应。
+主页：https://jifengqaq.github.io/markdown-chunk-eval/
 
-自包含单文件：内联样式、无脚本、无外部资源。
+附录：https://jifengqaq.github.io/markdown-chunk-eval/appendix/

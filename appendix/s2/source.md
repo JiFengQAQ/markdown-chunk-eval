@@ -1,0 +1,133 @@
+﻿---
+title: "露营模式"
+directory_path: "智慧用车 / 情景智能 / 露营模式"
+source_url: "https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04007011_f8300.html?tipsOs=harmonyos4.3&tipsProductRegion=f2n-evr&tipsLang=zh-cn&tipsFunNum=SF-04007011_f8300&systemType=hwtips&docId=0400506617732184&v=201775270875"
+manifest_index: 195
+navi_num: "SF-04007011_f8300"
+---
+
+# 目录路径：智慧用车 / 情景智能 / 露营模式
+
+## 露营模式
+
+使用露营模式，您可以规划露营的能量分配、快捷地为其他电器供电，还可以在车内长时间睡眠等，尽享安心舒适的露营体验。
+
+### 开启露营模式
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png>)方法
+
+1. 使用露营模式前，确保车辆处于 P 挡，影院模式、小憩模式、洗车模式、车内关怀模式已关闭。
+2. 您可以通过以下任一方式进入露营模式。
+
+   - 唤醒智慧语音后，说“打开露营模式”。
+   - 从中控屏顶部向下滑出**控制中心**，点击**露营模式**快捷开关。
+
+     若首次通过**控制中心**开启**露营模式**，需在**控制中心**点击**自定义**，添加**露营模式**快捷开关。
+   - 在中控屏进入**设置 ＞ 智慧场景**，点击**露营模式**。
+
+### 露营能量管理
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png>)方法
+
+1. 在露营模式界面点击![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202612071mzg8p/p0000308968.png>)，进入露营能量管理。
+
+   ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/image/202611180QliqD/p0000346072.png>)
+2. 根据需要，规划预留的回家里程、睡眠时长。
+
+   - **预留里程**：将根据最近一段出行里程自动获取，您也可以自行调整预留里程。
+
+     如果未根据最近一段出行里程自动获取里程，系统将为您提供默认预留里程。
+   - **睡眠时长**：当您需要长时间在车内休息时，可以设置睡眠的时长。
+   - **剩余可用里程**：剩余可用里程将由综合里程去掉预留回家里程、睡眠时长所消耗的里程后自动计算分配，您可以根据剩余可用里程规划用电。
+
+     ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/image/202605092tPlvp/p0000346071.png>)
+
+### 对外供电
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png>)方法
+
+1. 将 V2L 放电枪正确插入车辆慢充充电口（请参阅[车外给其他电器供电](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-00001000_f8103.html?funNum=SF-00001000_f8103)）。
+2. V2L 放电枪插好后，中控屏弹出提示框，点击提示框上的**允许**开关启用放电功能。
+3. 车辆开始对放电枪插板放电后，您可以进入露营模式界面，查看实时的对外供电功率，或者点击**对外供电**开关，暂停或开启供电。
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png>)提示
+
+系统默认给定供电限值，电量低于供电限值后停止对外供电，您可根据需要进入**设置 ＞ 能量 ＞ 反向供电**，设置供电限值。
+
+### 睡眠空间
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png>)方法
+
+**一键成床**
+
+1. 使用一键成床前，请先移除前排、第二排座椅上的物品，拆卸前排座椅头枕，收起投影幕布（若您的车辆已选装巨幕投影）。若您的车辆是六座车型且第三排座椅靠背处于折叠状态，请先移除座椅靠背上的物品。
+2. 进入露营模式界面，点击**睡眠空间**。
+3. 根据成床引导视频确认成床准备工作，确认完毕后，点击**一键成床**，前排座椅靠背将自动向后展开，若您的车辆是六座车型，第二排座椅同时向后移动。
+4. 座椅调整完毕后，铺上与成床区域相匹配的充气床垫。
+
+**一键收床**
+
+1. 当您需要收床时，请先移除前排、第二排座椅上的物品。
+2. 进入露营模式界面，点击**睡眠空间**。
+3. 根据收床引导视频确认收床准备工作，确认完毕后，点击**一键收床**，前排座椅靠背将自动恢复至成床前位置，若您的车辆是六座车型，第二排座椅也将自动恢复至成床前位置。
+4. 将头枕安装至前排座椅（请参阅[拆装前排座椅头枕](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-03002006_f8103.html?funNum=SF-03002006_f8103)）。
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png>)提示
+
+第三排座椅靠背处于折叠状态时开启一键成床，将先自动抬起第三排座椅靠背，再进行一键成床。
+
+### 车内睡眠
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png>)方法
+
+1. 启用车内睡眠前，请保持电量大于 30 % 。
+2. 在露营模式界面点击![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202612071mzg8p/p0000308968.png>)，进入能量管理，设置睡眠时长。
+
+   当车辆的剩余电量无法满足您设置的睡眠时长时，无法开启车内睡眠，车辆将自动启动增程器补电。
+3. 您可以通过以下任一方式开启或关闭车内睡眠。
+
+   - 唤醒智慧语音后，说“开启车内睡眠”，开启车内睡眠；说“关闭车内睡眠”，退出车内睡眠。
+   - 进入露营模式界面，点亮**车内睡眠**开关，开启车内睡眠；再次点击**车内睡眠**开关，退出车内睡眠。
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png>)提示
+
+- 启用车内睡眠后，系统自动开启空调，并熄灭仪表显示屏、副驾屏和自动大灯，关闭增程器、离车闭锁、自动雨刮、自动除雾、氛围灯、HUD、遮阳帘以及所有车窗，锁止所有车门。
+- 启用车内睡眠后，燃油检测、燃油补电、远程控制车辆、哨兵模式功能暂时不可用。
+- 当车内睡眠处于启用状态时，打开任一车门将自动解锁所有车门，关闭车门后所有车门将不会自动上锁。
+- 电量小于 10 %、切换挡位、切换账号或电源异常时，车内睡眠将自动退出。
+- 退出车内睡眠后，仪表显示屏、副驾屏、自动大灯、增程器、自动雨刮、自动除雾、氛围灯、HUD、离车闭锁、远程控制车辆恢复到启用车内睡眠前的状态。
+- 车辆充电时，启用或退出车内睡眠将不受电量限制。
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f3-ev/image/202604240nYdZU/caution.png>)注意
+
+- 启用车内睡眠后，离车闭锁功能暂时不可用，当您远离车辆时，请关注您的个人财产与车辆安全。
+- 电量小于 10 %、电源异常导致退出车内睡眠时，所有车窗高度将自动下降 10 % ，以确保车内空气流通。
+
+### 露天影院
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202612221jry3c/method.png>)方法
+
+1. 在露营模式界面点击**露天影院**。
+2. 点击**确定**开启后备箱，进入安装引导界面。
+3. 点击**查看引导**，根据界面提示，完成车外观影场景布置，点击**完成**开启露天影院。
+
+   若您熟悉且已完成观影场景布置，点击**安装完成**可直接开启露天影院。
+4. 在露天影院界面，您可以根据需要使用以下服务进行投影。
+
+   - 点击![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/x1l-ev/image/202612071mzg8p/p0000308968.png>)进入跨屏协助界面，请参见[巨幕投影](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001014_f8101.html?funNum=SF-04001014_f8101)。
+   - 点击![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-ev/image/202601072ztkxl/p0000308984.png>)进入互联服务界面，请参见[手机投屏](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04005003_f8300.html?funNum=SF-04005003_f8300)、[手机操控后排屏](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04001014_f8102.html?funNum=SF-04001014_f8102)、[生态流转](https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f2n-evr/topic/harmonyos4.3/zh-cn/content/SF-04005011_f8500.html?funNum=SF-04005011_f8500)。
+
+###### ![](<https://tips-p01-drcn.dbankcdn.cn/vug/harmonyos4.3/f1l-ev/image/202611131qjifp/tip.png>)提示
+
+- 使用露天影院前，请先在车主 APP 购买车载投影露天影院配套件。
+- 开启露天影院时，系统自动开启光机、关闭车外灯光，若您的车辆是六座车型，将自动折叠三排座椅。
+- 点击**退出露天影院**前，建议先手动拆除折叠镜头与露营幕布。
+
+### 退出露营模式
+
+您可以通过以下任一方式退出露营模式。
+
+- 唤醒智慧语音后，说“退出露营模式”。
+- 从中控屏顶部向下滑出**控制中心**，点击**露营模式**快捷开关进入露营模式界面，点击**结束露营**。
+- 在中控屏进入**设置 ＞ 智慧场景 ＞ 露营模式**，点击**结束露营**。
+- 将车辆挡位切换至非 P 挡状态。

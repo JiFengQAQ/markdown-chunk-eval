@@ -1,0 +1,30 @@
+{
+  "slug": "s2",
+  "scope": "成功案例 2",
+  "category": "success",
+  "title": "露营模式",
+  "variant": "A",
+  "model_key": "qwen3.6-35b-a3b",
+  "doc_id": "0196_SF-04007011_f8300_露营模式",
+  "status": "ok",
+  "model_called": true,
+  "attempts": 1,
+  "finish_reason": "stop",
+  "input_delivery": "system/user 已发送",
+  "response_state": "模型已返回响应",
+  "article_chars": 5509,
+  "article_sha256": "e9cd8bf9a028718c11001ec601fa0727c93107b3038dd3f81e0fa43e688d5658",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "862acfa08e9c29070fba36d3a6b6deefa9c799508b81daeacc60b4fdba37c854",
+  "response_text_chars": 44,
+  "run_source": {
+    "file": "results_final/final_A_qwen3.6-35b-a3b.jsonl",
+    "line": 7
+  },
+  "dataset_source": {
+    "file": "dataset_v2/shard_A_L2000_s2.jsonl",
+    "line": 5
+  },
+  "source_path": "/home/ubuntu/aito_manual_corpus/pages/0196_SF-04007011_f8300_露营模式.md",
+  "request_sha256": "e2eeb07ab743748141bf9ebc57c622a53ddc2c235b944dadd4e32db2206239d8"
+}

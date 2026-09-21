@@ -1,0 +1,30 @@
+{
+  "slug": "e6",
+  "scope": "错误案例 6 · 表格结构损坏",
+  "category": "table_structure_damage",
+  "title": "座椅参数",
+  "variant": "A",
+  "model_key": "qwen3.5-4b",
+  "doc_id": "0364_SF-03006002_f8113_座椅参数",
+  "status": "ok",
+  "model_called": true,
+  "attempts": 1,
+  "finish_reason": "stop",
+  "input_delivery": "system/user 已发送",
+  "response_state": "模型已返回响应",
+  "article_chars": 1979,
+  "article_sha256": "43c0d726d81c33393e59a3918d289beda0d8a98f8a71940a7d2d6cf1dfb96a75",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "de4a6fdfb74283d5bb0ee2ff6804f2635279ede108abaec6d70aa1cb7a102870",
+  "response_text_chars": 27,
+  "run_source": {
+    "file": "results_final/final_A_qwen3.5-4b.jsonl",
+    "line": 12
+  },
+  "dataset_source": {
+    "file": "dataset_v2/shard_A_L2000_s1.jsonl",
+    "line": 6
+  },
+  "source_path": "/home/ubuntu/aito_manual_corpus/pages/0364_SF-03006002_f8113_座椅参数.md",
+  "request_sha256": "aebc8619c0d0f8cfc1d141fa714aa614146af03835d7e14d0c69d38b4fbfd509"
+}

@@ -1,0 +1,30 @@
+{
+  "slug": "e1",
+  "scope": "错误案例 1 · atom 超限",
+  "category": "input_infeasible",
+  "title": "中控屏简介",
+  "variant": "A",
+  "model_key": "deepseek-v4-flash-0731",
+  "doc_id": "0025_SF-04001003_f8500_中控屏简介",
+  "status": "input_infeasible",
+  "model_called": false,
+  "attempts": 0,
+  "finish_reason": null,
+  "input_delivery": "system/user 已构建但未发送",
+  "response_state": "未调用模型，无响应",
+  "article_chars": 6484,
+  "article_sha256": "ec423c39d99e8284a8020be52afacedb46c8e1d1e7ea7006334eb61240d15b60",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "d84427c6da51c72ff952e4589b793746076e1d1dd0ad6df5f79d1665892f3d5b",
+  "response_text_chars": 11,
+  "run_source": {
+    "file": "results_final/final_A_deepseek-v4-flash-0731.jsonl",
+    "line": 2
+  },
+  "dataset_source": {
+    "file": "dataset_v2/shard_A_L2000_s1.jsonl",
+    "line": 1
+  },
+  "source_path": "/home/ubuntu/aito_manual_corpus/pages/0025_SF-04001003_f8500_中控屏简介.md",
+  "request_sha256": "662ebf5ed424b93decd28acd29ad43ff33fa7672bd2221a506d2e6576ff3dfbd"
+}

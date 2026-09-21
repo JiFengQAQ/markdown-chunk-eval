@@ -1,0 +1,30 @@
+{
+  "slug": "s1",
+  "scope": "成功案例 1",
+  "category": "success",
+  "title": "抬头显示",
+  "variant": "A",
+  "model_key": "deepseek-v4-flash-0731",
+  "doc_id": "0023_SF-04001002_f8500_抬头显示",
+  "status": "ok",
+  "model_called": true,
+  "attempts": 1,
+  "finish_reason": "stop",
+  "input_delivery": "system/user 已发送",
+  "response_state": "模型已返回响应",
+  "article_chars": 6662,
+  "article_sha256": "26080b9b52e35a33ab2403571275209072d1d37aba564f4777b6ce8ada8d1a78",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "e67b9549f571d86bad12a9f1e3b83f3a449d4f59a622123ee5e7bf4af3c9d32b",
+  "response_text_chars": 42,
+  "run_source": {
+    "file": "results_final/final_A_deepseek-v4-flash-0731.jsonl",
+    "line": 1
+  },
+  "dataset_source": {
+    "file": "dataset_v2/shard_A_L2000_s2.jsonl",
+    "line": 4
+  },
+  "source_path": "/home/ubuntu/aito_manual_corpus/pages/0023_SF-04001002_f8500_抬头显示.md",
+  "request_sha256": "b203007519ee8bb19a4e35a3e1949d6f186284fe0e8c75f18a1630f8bc45f41a"
+}

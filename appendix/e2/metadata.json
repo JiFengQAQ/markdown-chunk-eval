@@ -1,0 +1,30 @@
+{
+  "slug": "e2",
+  "scope": "错误案例 2 · 空输出",
+  "category": "empty_output",
+  "title": "制动系统功能",
+  "variant": "A",
+  "model_key": "qwen3.5-4b",
+  "doc_id": "0136_SF-01001005_f8100_制动系统功能",
+  "status": "failed",
+  "model_called": true,
+  "attempts": 1,
+  "finish_reason": "length",
+  "input_delivery": "system/user 已发送",
+  "response_state": "模型正文为空；response.json 保留真实响应",
+  "article_chars": 6358,
+  "article_sha256": "15bbd49191f8a9dac4e50e7884cef91bbef942c68a6ba8c32bd651c8701ccb32",
+  "system_sha256": "571d83370186b66415a35f56ccc2a01b977f7696dfea7ea151c70c1b75adbdbc",
+  "user_sha256": "f30bd6781d2d04516bf979059054b7352cf092d2fa2f101cf756f24e38449e47",
+  "response_text_chars": 0,
+  "run_source": {
+    "file": "results_final/final_A_qwen3.5-4b.jsonl",
+    "line": 5
+  },
+  "dataset_source": {
+    "file": "dataset_v2/shard_A_L2000_s1.jsonl",
+    "line": 2
+  },
+  "source_path": "/home/ubuntu/aito_manual_corpus/pages/0136_SF-01001005_f8100_制动系统功能.md",
+  "request_sha256": "8dbc5a4d31b90ef99f3af3f55a0b4c7469b3b92f9caf016244c21e6ad24720ef"
+}
